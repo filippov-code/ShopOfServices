@@ -2,6 +2,7 @@
 using System;
 using ShopOfServices.Models;
 using System.Reflection;
+using ShopOfServices.Models.Configurations;
 
 namespace ShopOfServices.Data
 {
@@ -17,7 +18,8 @@ namespace ShopOfServices.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            var assembly = Assembly.GetExecutingAssembly();
+            modelBuilder.ApplyConfigurationsFromAssembly(assembly);
         }
     }
 }

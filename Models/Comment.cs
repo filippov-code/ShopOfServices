@@ -17,10 +17,5 @@
         public DateTime Date { get; set; }
 
         public bool IsPublished { get; set; }
-
-        public Comment()
-        { 
-        
-        }
     }
 }

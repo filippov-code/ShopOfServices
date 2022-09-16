@@ -7,7 +7,7 @@ using System.Security.Claims;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<SiteDbContext>(x => x.UseSqlServer(
-    @"Data Source=(localdb)\MSSQLLocalDB; Database=ShopOfServicesSite; Persist Security Info=false; MultipleActiveResultSets=True; Trusted_Connection=True;"
+    builder.Configuration.GetConnectionString("DefaultConnection")
     ))
 .AddIdentity<IdentityUser, IdentityRole>(config =>
 {
