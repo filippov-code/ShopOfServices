@@ -1,0 +1,54 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    </head>
+    <body>
+        <header class="border border-dark">
+            <div class="container-fluid">
+                <div class="row justify-content-between">
+                    <div class="col-3 border border-dark">
+                        LOGO
+                    </div>
+                    <div class="col-4 border border-dark">
+                        SHORT CONTACTS
+                    </div>
+                </div>
+                <nav class="row justify-content-start">
+                    <div class="col-1 border border-dark">
+                        <a asp-controller="Home" asp-action="@nameof(HomeController.Index)">Главная</a>
+                    </div>
+                    <div class="col-1 border border-dark">
+                        <a asp-controller="Home" asp-action="@nameof(HomeController.About)">О нас</a>
+                    </div>
+                    <div class="col-1 border border-dark">
+                        <a asp-controller="Home" asp-action="@nameof(HomeController.Services)">Услуги</a>
+                    </div>
+                    <div class="col-1 border border-dark">
+                        <a asp-controller="Home" asp-action="@nameof(HomeController.Specialists)">Специалисты</a>
+                    </div>
+                    <div class="col-1 border border-dark">
+                        <a asp-controller="Home" asp-action="@nameof(HomeController.Prices)">Прайс</a>
+                    </div>
+                    <div class="col-1 border border-dark">
+                        Отзывы
+                    </div>
+                    <div class="col-1 border border-dark">
+                        <a asp-controller="Home" asp-action="@nameof(HomeController.Contacts)">Контакты</a>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        @RenderBody()
+
+        <footer class="border border-dark">
+            <div class="contaner-fluid">
+                <div class="row justify-content-start">
+                    <div class="col">
+                        FOOTER INFO
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

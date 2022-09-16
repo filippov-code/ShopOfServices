@@ -1,0 +1,19 @@
+﻿@model ShopOfServices.ViewModels.Admin.LoginViewModel
+@{
+    Layout = "_Layout";
+}
+
+<form asp-controller="Admin" asp-action="Login" method="post">
+    <div asp-validation-summary="All"></div>
+    <div>
+        <label>Email</label>
+        <input type="email" asp-for="Email" />
+    </div>
+    <div>
+        <label>Password</label>
+        <input type="text" asp-for="Password" />
+    </div>
+    <div>
+        <input type="submit" />
+    </div>
+</form>
