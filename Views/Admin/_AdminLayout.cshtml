@@ -15,14 +15,17 @@
                     <div class="col border border-dark">
                         Услуги
                     </div>
-                    <div class="border border-dark">
+                    <div class="col border border-dark">
                         Специалисты
+                    </div>
+                    <div class="col border border-dark">
+                        <a asp-controller="Admin" asp-action="@nameof(AdminController.Logout)">Выход</a>
                     </div>
                 </div>
             </div>
         </header>
 
-
+        @RenderBody()
 
         <footer>
 

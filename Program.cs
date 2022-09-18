@@ -21,7 +21,7 @@ builder.Services.AddDbContext<SiteDbContext>(x => x.UseSqlServer(
 
 builder.Services.ConfigureApplicationCookie(config =>
 {
-    config.LoginPath = "/Account/Login";
+    config.LoginPath = "/Admin/Login";
 });
 
 

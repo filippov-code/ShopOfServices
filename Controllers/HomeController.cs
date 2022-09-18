@@ -39,9 +39,9 @@ namespace ShopOfServices.Controllers
         {
             var specialists = new List<Specialist>
             {
-                new Specialist { FIO = "FIO 1" },
-                new Specialist { FIO = "FIO 2" },
-                new Specialist { FIO = "FIO 3" }
+                new Specialist { FirstName = "FIO 1" },
+                new Specialist { FirstName = "FIO 2" },
+                new Specialist { FirstName = "FIO 3" }
             };
             return View(specialists);
         }

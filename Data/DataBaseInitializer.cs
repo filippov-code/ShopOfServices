@@ -16,15 +16,16 @@ namespace ShopOfServices.Data
                 Email = "cooes.ef@gmail.com",
             };
 
-            var result = userManager.CreateAsync(user, "secretpass").GetAwaiter().GetResult();
+            var result = userManager.CreateAsync(user, "secretpass22").GetAwaiter().GetResult();
             if (result.Succeeded)
             {
                 userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, RoleNames.Administrator)).GetAwaiter().GetResult();
             }
             else
             {
-
+                System.Diagnostics.Debug.WriteLine("========================================================");
                 System.Diagnostics.Debug.WriteLine(string.Join("\n", result.Errors.Select(x => x.Description)));
+                System.Diagnostics.Debug.WriteLine("========================================================");
             }
         }
     }

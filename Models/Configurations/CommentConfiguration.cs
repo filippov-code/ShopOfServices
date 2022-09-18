@@ -10,16 +10,10 @@ namespace ShopOfServices.Models.Configurations
             builder
                 .HasOne(x => x.Service)
                 .WithMany(x => x.Comments)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(x => x.ServiceId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Service).IsRequired();
-            builder.Property(x => x.ResponseTo);
-            builder.Property(x => x.SenderName).IsRequired();
-            builder.Property(x => x.SenderEmail).IsRequired();
-            builder.Property(x => x.Message).IsRequired();
-            builder.Property(x => x.Date);
-            builder.Property(x => x.IsPublished).IsRequired();
         }
     }
 }

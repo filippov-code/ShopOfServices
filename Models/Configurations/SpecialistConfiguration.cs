@@ -7,10 +7,11 @@ namespace ShopOfServices.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<Specialist> builder)
         {
-            //builder.HasOne(x => x.Image);
+            builder
+                .HasOne(x => x.Image);
+
 
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.FIO).IsRequired();
         }
     }
 }
