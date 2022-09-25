@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Admin\Shared\" />
+    <Folder Include="wwwroot\Images\Uploads\" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ShopOfServices.Data;
 using ShopOfServices.Models;
 using System.Reflection;
 
@@ -8,6 +10,13 @@ namespace ShopOfServices.Controllers
 {
     public class HomeController : Controller
     {
+        SiteDbContext _siteDbContext;
+
+        public HomeController(SiteDbContext siteDbContext)
+        {
+            _siteDbContext = siteDbContext;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -20,14 +29,7 @@ namespace ShopOfServices.Controllers
 
         public IActionResult Services()
         {
-                var services = new List<Service>
-                {
-                    new Service { Title = "Услуга 1", ShortDescription = "Краткое описание услуги 1" },
-                    new Service { Title = "Услуга 2", ShortDescription = "Краткое описание услуги 2" },
-                    new Service { Title = "Услуга 3", ShortDescription = "Краткое описание услуги 3" }
-                };
-
-                return View(services);
+            return View(_siteDbContext.Services.Include(x => x.Image).ToList());
         }
 
         public IActionResult Service(Guid id)

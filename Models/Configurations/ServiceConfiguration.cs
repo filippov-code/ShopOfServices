@@ -11,6 +11,7 @@ namespace ShopOfServices.Models.Configurations
                 .HasOne(x => x.Image);
 
             builder.HasKey(x => x.Id);
+
         }
     }
 }

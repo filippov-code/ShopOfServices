@@ -1,0 +1,30 @@
+﻿@model ShopOfServices.ViewModels.Admin.ServiceViewModel
+@{
+    Layout = "_AdminLayout";
+}
+
+<h1>Добавить услугу</h1>
+<form asp-controller="Admin" asp-action="AddOrUpdateService" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="All"></div>
+    <input asp-for="Id" type="hidden" />
+    <div>
+        <label>Название</label>
+        <input asp-for="Title" type="text" />
+    </div>
+    <div>
+        <label>Изображение</label>
+        <img src="@Model?.OldImagePath" height="300" width="200"/>
+        <input asp-for="NewImageFile" type="file" accept="image/jpeg, image/png" />
+    </div>
+    <div>
+        <label>Короткое описание</label>
+        <input asp-for="ShortDescription" type="text" />
+    </div>
+    <div>
+        <label>Полное описание</label>
+        <input asp-for="FullDescription" />
+    </div>
+    <div>
+        <input type="submit" value="Сохранить" />
+    </div>
+</form>

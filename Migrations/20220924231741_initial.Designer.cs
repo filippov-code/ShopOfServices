@@ -12,8 +12,8 @@ using ShopOfServices.Data;
 namespace ShopOfServices.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20220918163254_Initial")]
-    partial class Initial
+    [Migration("20220924231741_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

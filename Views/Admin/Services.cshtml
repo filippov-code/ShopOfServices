@@ -1,0 +1,23 @@
+﻿@model Service[]
+@{
+    Layout = "_AdminLayout";
+}
+
+<div>
+    <a asp-controller="Admin" asp-action="AddOrUpdateService">Добавить услугу</a>
+</div>
+<div>
+    Все услуги
+</div>
+<div class="container-fluid">
+    @foreach (var service in Model)
+    {
+        <div class="row">
+            <div class="border border-dark">
+                <a asp-controller="Admin" asp-action="AddOrUpdateService" asp-route-id="@service.Id"><h3>@service.Title</h3></a>
+                <h4>@service.ShortDescription</h4>
+            </div>
+        </div>
+    }
+</div>
+
