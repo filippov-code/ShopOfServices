@@ -1,0 +1,23 @@
+﻿@model Specialist[]
+@{
+    Layout = "_AdminLayout";
+}
+
+
+<div>
+    <a asp-controller="Admin" asp-action="EditSpecialist">Добавить специалиста</a>
+</div>
+<div>
+    Все услуги
+</div>
+<div class="container-fluid">
+    @foreach (var specialist in Model)
+    {
+        <div class="row">
+            <div class="border border-dark">
+                <a asp-controller="Admin" asp-action="EditSpecialist" asp-route-id="@specialist.Id"><h3>@specialist.GetFIO()</h3></a>
+                <h4>@specialist.Post</h4>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,49 @@
+﻿@model ShopOfServices.ViewModels.Admin.EditServiceViewModel
+@{
+    Layout = "_AdminLayout";
+}
+
+<h1>Добавить услугу</h1>
+<form asp-controller="Admin" asp-action="EditService" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="All"></div>
+    <input asp-for="Id" type="hidden" />
+    <div>
+        <label>Название</label>
+        <input asp-for="Title" type="text" />
+    </div>
+    <div>
+        <label>Изображение</label>
+        <img src="@Model?.OldImagePath" height="300" width="200"/>
+        <input asp-for="NewImageFile" type="file" accept="image/jpeg, image/png" />
+    </div>
+    <div>
+        <label>Короткое описание</label>
+        <input asp-for="ShortDescription" type="text" />
+    </div>
+    <div>
+        <label>Полное описание</label>
+        <input asp-for="FullDescription" />
+    </div>
+    <div>
+        <input type="submit" value="Сохранить" />
+    </div>
+    <div>
+        <label>Специалисты</label>
+    </div>
+    <div class="container-fluid">
+        @for(int i = 0; i < Model.AllSpecialists.Length; i++)
+        {
+            <div class="row border border-dark">
+                <div class="col-1">
+                    <input type="checkbox" asp-for="@Model.AllSpecialists[i].IsChecked" checked="@(Model.Specialists != null && Model.Specialists.Count(x => x.Id == Model.AllSpecialists[i].Id) > 0)" />
+                    <input type="hidden" asp-for="@Model.AllSpecialists[i].Id" />
+                    <input type="hidden" asp-for="@Model.AllSpecialists[i].FIO"/>
+                    <input type="hidden" asp-for="@Model.AllSpecialists[i].Post"/>
+                </div>
+                <div class="col">
+                    <label>@Model.AllSpecialists[i].FIO</label>
+                </div>
+            </div>
+        }
+    </div>
+</form>

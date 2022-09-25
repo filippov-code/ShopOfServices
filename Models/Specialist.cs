@@ -10,10 +10,17 @@
 
         public string LastName { get; set; }
 
-        public Guid? ImageId { get; set; }
-
         public Image Image { get; set; }
 
+        public string Post { get; set; }
+
         public string Description { get; set; }
+
+        public ICollection<Service> Services { get; set; }
+
+        public string GetFIO()
+        {
+            return (LastName + " " + FirstName + " " + MiddleName).Trim();
+        }
     }
 }

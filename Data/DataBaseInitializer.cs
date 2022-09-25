@@ -30,7 +30,7 @@ namespace ShopOfServices.Data
 
 
             var dbContext = scopeServiceProvider.GetService<SiteDbContext>();
-            dbContext.Images.Add(new Models.Image { Id = Guid.Empty, Path = "emptyImage"});
+            dbContext.Images.Add(new Models.Image { Id = Guid.Empty, Name = "emptyImage"});
             dbContext.SaveChanges();
         }
     }

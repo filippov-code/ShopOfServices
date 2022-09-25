@@ -76,27 +76,40 @@ namespace ShopOfServices.Controllers
             return View(_siteDbContext.Services.ToArray());
         }
 
+        #region EditServices
         [HttpGet]
-        public IActionResult AddOrUpdateService(Guid id)
+        public IActionResult EditService(Guid id)
         {
+            var allSpecialistsCheckedBoxs = _siteDbContext
+                .Specialists
+                .Select(x => new SpecialistCheckBox 
+                { 
+                    Id = x.Id,
+                    FIO = x.GetFIO(),
+                    Post = x.Post
+                })
+                .ToArray();
+
             if (id != Guid.Empty)
             {
-                Service service = _siteDbContext.Services.Include(x => x.Image).SingleOrDefault(s => s.Id == id);
-                ServiceViewModel model = new ServiceViewModel
+                Service service = _siteDbContext.Services.Include(x => x.Image).Include(x => x.Specialists).SingleOrDefault(s => s.Id == id);
+                EditServiceViewModel model = new EditServiceViewModel
                 {
                     Id = id,
                     Title = service.Title,
-                    OldImagePath = "/images/uploads/" + service.Image.Path,
+                    OldImagePath = service.Image.GetPath(),
                     ShortDescription = service.ShortDescription,
-                    FullDescription = service.FullDescription
+                    FullDescription = service.FullDescription,
+                    Specialists = service.Specialists.ToArray(),
+                    AllSpecialists = allSpecialistsCheckedBoxs
                 };
                 return View(model);
             }
-            return View();
+            return View(new EditServiceViewModel { AllSpecialists = allSpecialistsCheckedBoxs});
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrUpdateService(ServiceViewModel model)
+        public async Task<IActionResult> EditService(EditServiceViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -114,18 +127,24 @@ namespace ShopOfServices.Controllers
                     {
                         await model.NewImageFile.CopyToAsync(stream);
                     }
-                    
 
-                    newImage.Path = imageName;
+                    newImage.Name = imageName;
                 }
-                else newImage.Path = Image.EmptyImageName;
+                else newImage.Name = Image.EmptyImageName;
+
+                var newSpecialists = model.AllSpecialists
+                    .Where(i => i.IsChecked)
+                    .Select(x => _siteDbContext.Specialists
+                    .Single(y => y.Id == x.Id))
+                    .ToArray();
 
                 Service service = new Service
                 {
                     Title = model.Title,
                     Image = newImage,
                     ShortDescription = model.ShortDescription,
-                    FullDescription = model.FullDescription
+                    FullDescription = model.FullDescription,
+                    Specialists = newSpecialists
                 };
 
                 _siteDbContext.Images.Add(newImage);
@@ -133,13 +152,13 @@ namespace ShopOfServices.Controllers
             }   
             else
             {
-                Service service = await _siteDbContext.Services.Include(x => x.Image).SingleAsync(x => x.Id == model.Id);
+                Service service = await _siteDbContext.Services.Include(x => x.Image).Include(x=>x.Specialists).SingleAsync(x => x.Id == model.Id);
                 if (model.NewImageFile != null)
                 {
-                    if (service.Image.Path != Image.EmptyImageName)
+                    if (service.Image.Name != Image.EmptyImageName)
                     {
                         string imagesFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, Image.UploadsFolderPath);
-                        string imagesForDeletePath = Path.Combine(imagesFolderPath, service.Image.Path);
+                        string imagesForDeletePath = Path.Combine(imagesFolderPath, service.Image.Name);
                         System.IO.File.Delete(imagesForDeletePath);
                     }
 
@@ -150,7 +169,7 @@ namespace ShopOfServices.Controllers
                         await model.NewImageFile.CopyToAsync(stream);
                     }
 
-                    service.Image.Path = newImageName;
+                    service.Image.Name = newImageName;
                     _siteDbContext.Images.Update(service.Image);
                 }
 
@@ -158,12 +177,122 @@ namespace ShopOfServices.Controllers
                 service.ShortDescription = model.ShortDescription;
                 service.FullDescription = model.FullDescription;
 
-                _siteDbContext.Update(service);
+                var checkedSpecialists = model.AllSpecialists.Where(x => x.IsChecked);
+                var newSpecialists = checkedSpecialists.Select(x => _siteDbContext.Specialists.Single(u => u.Id == x.Id));
+
+                service.Specialists.Clear();
+                foreach (var specialist in newSpecialists)
+                    service.Specialists.Add(specialist);
+
+                _siteDbContext.Services.Update(service);
             }
 
-            _siteDbContext.SaveChanges();
-            return RedirectToAction("Services");
+            await _siteDbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Services));
         }
+        #endregion
+
+        public IActionResult Specialists()
+        {
+            return View(_siteDbContext.Specialists.ToArray());
+        }
+        
+        #region EditSpecialists
+        [HttpGet]
+        public IActionResult EditSpecialist(Guid id)
+        {
+            if (id != Guid.Empty)
+            {
+                Specialist specialist = _siteDbContext.Specialists.Include(x => x.Image).SingleOrDefault(s => s.Id == id);
+                EditSpecialistViewModel model = new EditSpecialistViewModel
+                {
+                    Id = id,
+                    OldImagePath = specialist.Image.GetPath(),
+                    FirstName = specialist.FirstName,
+                    MiddleName = specialist.MiddleName,
+                    LastName = specialist.LastName,
+                    Post = specialist.Post,
+                    Description = specialist.Description
+                };
+                return View(model);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSpecialist(EditSpecialistViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (model.Id == null)
+            {
+                Image newImage = new Image();
+                if (model.NewImageFile != null)
+                {
+                    string imageName = GetUniqueFileName(model.NewImageFile.FileName);
+                    string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, Image.UploadsFolderPath, imageName);
+                    using (var stream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        await model.NewImageFile.CopyToAsync(stream);
+                    }
+
+
+                    newImage.Name = imageName;
+                }
+                else newImage.Name = Image.EmptyImageName;
+
+                Specialist specialist = new Specialist
+                {
+                    FirstName = model.FirstName,
+                    MiddleName = model.MiddleName,
+                    LastName = model.LastName,
+                    Image = newImage,
+                    Post = model.Post,
+                    Description = model.Description
+                };
+
+                _siteDbContext.Images.Add(newImage);
+                _siteDbContext.Specialists.Add(specialist);
+            }
+            else
+            {
+                Specialist specialist = await _siteDbContext.Specialists.Include(x => x.Image).SingleAsync(x => x.Id == model.Id);
+                if (model.NewImageFile != null)
+                {
+                    if (specialist.Image.Name != Image.EmptyImageName)
+                    {
+                        string imagesFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, Image.UploadsFolderPath);
+                        string imagesForDeletePath = Path.Combine(imagesFolderPath, specialist.Image.Name);
+                        System.IO.File.Delete(imagesForDeletePath);
+                    }
+
+                    string newImageName = GetUniqueFileName(model.NewImageFile.FileName);
+                    string newImagePath = Path.Combine(_webHostEnvironment.WebRootPath, Image.UploadsFolderPath, newImageName);
+                    using (var stream = new FileStream(newImagePath, FileMode.Create))
+                    {
+                        await model.NewImageFile.CopyToAsync(stream);
+                    }
+
+                    specialist.Image.Name = newImageName;
+                    _siteDbContext.Images.Update(specialist.Image);
+                }
+
+                specialist.FirstName = model.FirstName;
+                specialist.MiddleName = model.MiddleName;
+                specialist.LastName = model.LastName;
+                specialist.Post = model.Post;
+                specialist.Description = model.Description;
+
+                _siteDbContext.Specialists.Update(specialist);
+            }
+
+            await _siteDbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Specialists));
+        }
+        #endregion
 
         private string GetUniqueFileName(string fileName)
         {

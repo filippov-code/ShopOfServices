@@ -1,0 +1,38 @@
+﻿@model ShopOfServices.ViewModels.Admin.EditSpecialistViewModel
+@{
+    Layout = "_AdminLayout";
+}
+
+<h1>Добавить услугу</h1>
+<form asp-controller="Admin" asp-action="EditSpecialist" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="All"></div>
+    <input asp-for="Id" type="hidden" />
+    <div>
+        <label>Имя</label>
+        <input asp-for="FirstName" type="text" />
+    </div>
+    <div>
+        <label>Отчество</label>
+        <input asp-for="MiddleName" type="text" />
+    </div>
+    <div>
+        <label>Фамилия</label>
+        <input asp-for="LastName" type="text" />
+    </div>
+    <div>
+        <label>Изображение</label>
+        <img src="@Model?.OldImagePath" height="300" width="200" />
+        <input asp-for="NewImageFile" type="file" accept="image/jpeg, image/png" />
+    </div>
+    <div>
+        <label>Должность</label>
+        <input asp-for="Post" type="text" />
+    </div>
+    <div>
+        <label>Описание</label>
+        <input asp-for="Description" />
+    </div>
+    <div>
+        <input type="submit" value="Сохранить" />
+    </div>
+</form>
