@@ -6,8 +6,6 @@ namespace ShopOfServices.Models
     {
         public Guid Id { get; set; }
 
-        public Guid ServiceId { get; set; }
-
         public Service Service { get; set; }
 
         public string SenderName { get; set; }
