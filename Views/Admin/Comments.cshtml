@@ -1,0 +1,47 @@
+﻿@model ICollection<Comment>
+@{
+    Layout = "_AdminLayout";
+}
+@{
+    List<Comment> piblishedComments = Model.Where(x => x.IsPublished).ToList();
+    List<Comment> notPublishedComments = Model.Where(x => !x.IsPublished).ToList();
+}
+
+<h2>Управление отзывами</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            <div class="border border-dark">
+                <h3>Опубликованные</h3>
+            </div>
+            @foreach (var comment in piblishedComments)
+            {
+                <div class="border border-dark">
+                    <div>@comment.SenderName</div>
+                    <div>На @comment.Service.Title</div>
+                    <div>@comment.Message</div>
+                    <div>
+                        <a asp-controller="Admin" asp-action="DeleteComment" asp-route-id="@comment.Id">Удалить</a>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-6">
+            <div class="border border-dark">
+                <h3>Не опубликованные</h3>
+            </div>
+            @foreach (var comment in notPublishedComments)
+            {
+                <div class="border border-dark">
+                    <div>@comment.SenderName</div>
+                    <div>На @comment.Service.Title</div>
+                    <div>@comment.Message</div>
+                    <div>
+                        <a asp-controller="Admin" asp-action="PostComment" asp-route-id="@comment.Id">Опубликовать</a>
+                        <a asp-controller="Admin" asp-action="DeleteComment" asp-route-id="@comment.Id">Удалить</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

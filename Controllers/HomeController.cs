@@ -33,16 +33,27 @@ namespace ShopOfServices.Controllers
             return View(_siteDbContext.Services.Include(x => x.Image).ToArray());
         }
 
-        public IActionResult Service(Guid id)
+        public async Task<IActionResult> Service(Guid id)
         {
-            Service service = _siteDbContext
+            Service service = await _siteDbContext
                 .Services
                 .Include(x => x.Image)
                 .Include(x => x.Specialists)
                 .Include(x => x.Comments)
-                .SingleOrDefault(x => x.Id == id);
+                .SingleOrDefaultAsync(x => x.Id == id);
 
-            return View(service);
+            ServiceViewModel serviceViewModel = new ServiceViewModel
+            {
+                Id = service.Id,
+                Title = service.Title,
+                ImagePath = service.Image.GetPath(),
+                ShortDescription = service.ShortDescription,
+                FullDescription = service.FullDescription,
+                Specialists = service.Specialists,
+                Comments = service.Comments
+            };
+
+            return View(serviceViewModel);
         }
 
         public IActionResult Specialists()
@@ -71,33 +82,46 @@ namespace ShopOfServices.Controllers
             return View();
         }
 
+        public async Task<IActionResult> AddComment(Guid id)
+        {
+            Service service = await _siteDbContext.Services.SingleOrDefaultAsync(x => x.Id == id);
+            NewCommentViewModel newCommnetViewModel = new NewCommentViewModel
+            {
+                ServiceName = service.Title,
+                ServiceId = service.Id
+            };
+            return View(newCommnetViewModel);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AddComment(NewCommentViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+
             Service service = await _siteDbContext.Services.SingleOrDefaultAsync(x => x.Id == model.ServiceId);
             if (service == null)
             {
-                ModelState.AddModelError("", "Что-то пошло не так");
+                ModelState.AddModelError("", "Такая услуга не найдена");
                 return View(model);
             }
 
-            Comment comment = new Comment
+            Comment comment = new Comment()
             {
                 CreateAt = DateTime.Now,
                 SenderEmail = model.Email,
                 SenderName = model.Name,
-                Service = service,
                 IsPublished = false,
-                Message = model.Message
+                Message = model.Message,
+                Service = service
             };
 
             await _siteDbContext.Comments.AddAsync(comment);
             await _siteDbContext.SaveChangesAsync();
 
-            return View();
+            return RedirectToAction(nameof(Service), new { id = model.ServiceId });
         }
 
         public IActionResult Contacts()

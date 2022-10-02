@@ -71,6 +71,17 @@ namespace ShopOfServices.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult Main()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Main(string html)
+        {
+            return Content(html);
+        }
+
         public IActionResult Services()
         {
             return View(_siteDbContext.Services.ToArray());
@@ -301,6 +312,29 @@ namespace ShopOfServices.Controllers
                 DateTime.Now.ToString("dd_mm_yyyy_HH_mm_ss") +
                 Path.GetExtension(fileName);
 
+        }
+
+        public IActionResult Comments()
+        {
+            List<Comment> comments = _siteDbContext.Comments.Include(x => x.Service).ToList();
+            return View(comments);
+        }
+
+        public async Task<IActionResult> PostComment(Guid id)
+        {
+            Comment comment = await _siteDbContext.Comments.SingleOrDefaultAsync(x => x.Id == id);
+            comment.IsPublished = true;
+            _siteDbContext.Comments.Update(comment);
+            await _siteDbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Comments), id);
+        }
+
+        public async Task<IActionResult> DeleteComment(Guid id)
+        {
+            Comment comment = await _siteDbContext.Comments.SingleOrDefaultAsync(x => x.Id == id);
+            _siteDbContext.Comments.Remove(comment);
+            await _siteDbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Comments), id);
         }
     }
 }

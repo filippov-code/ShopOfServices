@@ -13,10 +13,16 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col border border-dark">
+                        <a asp-controller="Admin" asp-action="Main">Главная</a>
+                    </div>
+                    <div class="col border border-dark">
                         <a asp-controller="Admin" asp-action="Services">Услуги</a>
                     </div>
                     <div class="col border border-dark">
                         <a asp-controller="Admin" asp-action="Specialists">Специалисты</a>
+                    </div>
+                    <div class="col border border-dark">
+                        <a asp-controller="Admin" asp-action="Comments">Отзывы</a>
                     </div>
                     <div class="col border border-dark">
                         <a asp-controller="Admin" asp-action="@nameof(AdminController.Logout)">Выход</a>

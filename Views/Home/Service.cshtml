@@ -1,11 +1,19 @@
-﻿@model Service
+﻿@model ShopOfServices.ViewModels.Home.ServiceViewModel
 @{
     Layout = "_Layout";
+}
+@{
+
+    List<Comment> publishedComments = new();
+    if (Model.Comments != null)
+    {
+        publishedComments = Model.Comments.Where(x => x.IsPublished).ToList();
+    }
 }
 
 <h2>Услуга</h2>
 <div>
-    <img src="@Model.Image.GetPath()" height="400" width="300" />
+    <img src="@Model.ImagePath" height="400" width="300" />
 </div>
 <h3>@Model.Title</h3>
 <h4>@Model.FullDescription</h4>
@@ -17,9 +25,9 @@
     </div>
 }
 <h4>Отзывы</h4>
-@if (Model.Comments.Count > 0)
+@if (publishedComments.Count > 0)
 {
-    foreach (var comment in Model.Comments)
+    foreach (var comment in publishedComments)
     {
         <div class="border border-dark">
             <h5>@comment.SenderName</h5>
@@ -34,9 +42,7 @@ else
     </div>
 }
 <div class="border border-dark">
-    <form  method="post">
-
-    </form>
+    <a asp-controller="Home" asp-action="AddComment" asp-route-id="@Model.Id">Оставить отзыв</a>
 </div>
 
 
