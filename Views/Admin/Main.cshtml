@@ -1,31 +1,14 @@
-﻿@model string
+﻿@model ShopOfServices.ViewModels.Admin.EditPageViewModel
 @{
     Layout = "_AdminLayout";
 }
 <h2>Редактирование главной страницы</h2>
 <form asp-controller="Admin" asp-action="Main" method="post">
-	<textarea name="html" id="ckeditor">
-
-	</textarea>
+	<input type="hidden" asp-for="Id"/>
+	<textarea asp-for="Html" id="ckeditor"></textarea>
 	<div>
-		<input type="submit" />
+		<input type="submit" value="Сохранить"/>
 	</div>
 </form>
 
-
-<script src="~/ckeditor/ckeditor.js"></script>
-<script>
-	ClassicEditor
-				.create( document.querySelector( '#ckeditor' ), {
-					
-					licenseKey: '',
-					title: {}
-				} )
-				.then( editor => {
-					window.editor = editor;
-				} )
-				.catch( error => {
-					console.error( 'Oops, something went wrong!' );
-					console.error( error );
-				} );
-</script>
+@await Html.PartialAsync("CKEditorConnectPartial")

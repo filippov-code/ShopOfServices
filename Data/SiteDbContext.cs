@@ -18,6 +18,8 @@ namespace ShopOfServices.Data
 
         public DbSet<Image> Images { get; set; }
 
+        public DbSet<Page> Pages { get; set; }
+
 
         public SiteDbContext(DbContextOptions<SiteDbContext> options) : base(options)
         {

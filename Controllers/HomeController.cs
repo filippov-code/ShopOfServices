@@ -18,9 +18,12 @@ namespace ShopOfServices.Controllers
             _siteDbContext = siteDbContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            Page page = await _siteDbContext.Pages.Where(x => x.Name == PageNames.Main).SingleOrDefaultAsync();
+            //if (page != null)
+                return View(model: page.Html);
+            //return View();
         }
 
         public IActionResult About()

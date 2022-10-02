@@ -71,15 +71,32 @@ namespace ShopOfServices.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Main()
+        public async Task<IActionResult> Main()
         {
-            return View();
+            Page page = await _siteDbContext.Pages.SingleOrDefaultAsync(x => x.Name == PageNames.Main);
+            EditPageViewModel pageViewModel = new EditPageViewModel { Id = page.Id, Html = page.Html };
+            return View(pageViewModel);
         }
 
         [HttpPost]
-        public IActionResult Main(string html)
+        public async Task<IActionResult> Main(EditPageViewModel model)
         {
-            return Content(html);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            Page page = await _siteDbContext.Pages.SingleOrDefaultAsync(x => x.Id == model.Id);
+            if (page == null)
+            {
+                ModelState.AddModelError("", "Не найдена редактируемая страница. Попробуйте обновить страницу.");
+                return View(model);
+            }
+            page.Html = model.Html;
+            _siteDbContext.Pages.Update(page);
+            await _siteDbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Services()
