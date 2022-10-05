@@ -17,6 +17,7 @@
             <div class="border border-dark">
                 <a asp-controller="Admin" asp-action="EditSpecialist" asp-route-id="@specialist.Id"><h3>@specialist.GetFIO()</h3></a>
                 <h4>@specialist.Post</h4>
+                <a asp-controller="Admin" asp-action="DeleteSpecialist" asp-route-id="@specialist.Id">Удалить</a>
             </div>
         </div>
     }

@@ -9,7 +9,7 @@
     {
         <div class="row">
             <div class="col">
-                <a asp-controller="Home" asp-action="@nameof(HomeController.Specialist)" asp-route-id="@specialist.Id"><h3>@specialist.FirstName</h3></a>
+                <a asp-controller="Home" asp-action="@nameof(HomeController.Specialist)" asp-route-id="@specialist.Id"><h3>@specialist.GetFIO()</h3></a>
             </div>
         </div>
     }

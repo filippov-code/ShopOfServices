@@ -21,14 +21,15 @@ namespace ShopOfServices.Controllers
         public async Task<IActionResult> Index()
         {
             Page page = await _siteDbContext.Pages.Where(x => x.Name == PageNames.Main).SingleOrDefaultAsync();
-            //if (page != null)
-                return View(model: page.Html);
-            //return View();
+
+            return View(model: page.Html);
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> About()
         {
-            return View();
+            Page page = await _siteDbContext.Pages.Where(x => x.Name == PageNames.About).SingleOrDefaultAsync();
+
+            return View(model: page.Html);
         }
 
         public IActionResult Services()
@@ -61,28 +62,27 @@ namespace ShopOfServices.Controllers
 
         public IActionResult Specialists()
         {
-            var specialists = new List<Specialist>
-            {
-                new Specialist { FirstName = "FIO 1" },
-                new Specialist { FirstName = "FIO 2" },
-                new Specialist { FirstName = "FIO 3" }
-            };
+            var specialists = _siteDbContext.Specialists.Include(x => x.Image).ToList();
             return View(specialists);
         }
 
         public IActionResult Specialist(Guid id)
         {
-            return View(id);
+            Specialist specialist = _siteDbContext.Specialists.Include(x => x.Image).SingleOrDefault(x => x.Id == id);
+            return View(specialist);
         }
 
-        public IActionResult Prices()
+        public async Task<IActionResult> Prices()
         {
-            return View();
+            Page page = await _siteDbContext.Pages.Where(x => x.Name == PageNames.Price).SingleOrDefaultAsync();
+
+            return View(model: page.Html);
         }
 
         public IActionResult Comments()
         {
-            return View();
+            List<Comment> comments = _siteDbContext.Comments.Where(x => x.IsPublished).ToList();
+            return View(comments);
         }
 
         public async Task<IActionResult> AddComment(Guid id)
@@ -127,9 +127,11 @@ namespace ShopOfServices.Controllers
             return RedirectToAction(nameof(Service), new { id = model.ServiceId });
         }
 
-        public IActionResult Contacts()
+        public async Task<IActionResult> Contacts()
         {
-            return View();
+            Page page = await _siteDbContext.Pages.Where(x => x.Name == PageNames.Contacts).SingleOrDefaultAsync();
+
+            return View(model: page.Html);
         }
     }
 }

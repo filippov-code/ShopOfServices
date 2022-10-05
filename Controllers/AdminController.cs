@@ -71,15 +71,36 @@ namespace ShopOfServices.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #region Pages
         public async Task<IActionResult> Main()
         {
-            Page page = await _siteDbContext.Pages.SingleOrDefaultAsync(x => x.Name == PageNames.Main);
+            return await GetEditingPage(PageNames.Main, "Главная");
+        }
+
+        public async Task<IActionResult> About()
+        {
+            return await GetEditingPage(PageNames.About, "О нас");
+        }
+        public async Task<IActionResult> Price()
+        {
+            return await GetEditingPage(PageNames.Price, "Цены");
+        }
+
+        public async Task<IActionResult> Contacts()
+        {
+            return await GetEditingPage(PageNames.Contacts, "Контакты");
+        }
+
+        private async Task<IActionResult> GetEditingPage(string pageTypeName, string pageName)
+        {
+            Page page = await _siteDbContext.Pages.SingleOrDefaultAsync(x => x.Name == pageTypeName);
             EditPageViewModel pageViewModel = new EditPageViewModel { Id = page.Id, Html = page.Html };
-            return View(pageViewModel);
+            ViewBag.Title = $"Редактирование страницы \"{pageName}\"";
+            return View("EditPage", pageViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Main(EditPageViewModel model)
+        public async Task<IActionResult> SavePage(EditPageViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -98,7 +119,7 @@ namespace ShopOfServices.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+        #endregion
         public IActionResult Services()
         {
             return View(_siteDbContext.Services.ToArray());
@@ -218,6 +239,17 @@ namespace ShopOfServices.Controllers
             await _siteDbContext.SaveChangesAsync();
             return RedirectToAction(nameof(Services));
         }
+
+        public IActionResult DeleteService(Guid id)
+        {
+            var service = _siteDbContext.Services
+                .Include(x => x.Specialists)
+                .Include(x => x.Image)
+                .SingleOrDefault(x => x.Id == id);
+            _siteDbContext.Services.Remove(service);
+            _siteDbContext.SaveChanges();
+            return RedirectToAction(nameof(Services));
+        }
         #endregion
 
         public IActionResult Specialists()
@@ -318,6 +350,17 @@ namespace ShopOfServices.Controllers
             }
 
             await _siteDbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Specialists));
+        }
+
+        public IActionResult DeleteSpecialist(Guid id)
+        {
+            var specialist = _siteDbContext.Specialists
+                .Include(x => x.Image)
+                .Include(x => x.Services)
+                .SingleOrDefault(x => x.Id == id);
+            _siteDbContext.Specialists.Remove(specialist);
+            _siteDbContext.SaveChanges();
             return RedirectToAction(nameof(Specialists));
         }
         #endregion

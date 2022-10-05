@@ -1,5 +1,6 @@
-﻿@{
+﻿@model string
+@{
     Layout = "_Layout";
 }
 
-<h2>Контакты</h2>
+@Html.Raw(Model)
