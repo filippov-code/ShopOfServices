@@ -78,9 +78,10 @@ namespace ShopOfServices.Controllers
         {
             return await GetEditingPage(PageNames.About, "О нас");
         }
-        public async Task<IActionResult> Price()
+        public async Task<IActionResult> EditPrices()
         {
-            return null;
+            var categories = _siteDbContext.Categories.Include(x => x.Services).ToList();
+            return View(categories);
         }
 
         public async Task<IActionResult> Contacts()
@@ -128,14 +129,14 @@ namespace ShopOfServices.Controllers
         {
             if (id != Guid.Empty)
             {
-                Category category = _siteDbContext.Categories.Include(x => x.Image).SingleOrDefault(s => s.Id == id);
+                Category category = _siteDbContext.Categories.Include(x => x.Image).Include(x => x.Services).SingleOrDefault(s => s.Id == id);
                 EditCategoryViewModel model = new EditCategoryViewModel
                 {
                     Id = id,
                     Name = category.Name,
                     OldImagePath = category.Image.GetPath(),
                     Description = category.Description,
-                    Services = category.Services.ToArray()
+                    ServiceNames = category.Services.Select(x => x.Name).ToArray()
                 };
                 return View(model);
             }
@@ -171,7 +172,7 @@ namespace ShopOfServices.Controllers
                 {
                     Name = model.Name,
                     Description = model.Description,
-                    Services = model.Services,
+                    Services = model.ServiceNames.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => new Service { Name = x}).ToArray(),
                     Image = newImage
                 };
 
@@ -180,7 +181,7 @@ namespace ShopOfServices.Controllers
             }   
             else
             {
-                Category category = await _siteDbContext.Categories.Include(x => x.Image).SingleAsync(x => x.Id == model.Id);
+                Category category = await _siteDbContext.Categories.Include(x => x.Image).Include(x => x.Services).SingleAsync(x => x.Id == model.Id);
                 if (model.NewImageFile != null)
                 {
                     if (category.Image.Name != Image.EmptyImageName)
@@ -205,9 +206,10 @@ namespace ShopOfServices.Controllers
                 category.Description = model.Description;
 
                 category.Services.Clear();
-                foreach (var service in model.Services)
+                foreach (var serviceName in model.ServiceNames)
                 {
-                    category.Services.Add(service);
+                    if (!string.IsNullOrWhiteSpace(serviceName))
+                        category.Services.Add(new Service { Name = serviceName});
                 }
 
                 _siteDbContext.Categories.Update(category);

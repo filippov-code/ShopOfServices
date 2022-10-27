@@ -241,7 +241,7 @@ namespace ShopOfServices.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Comment", b =>
@@ -275,7 +275,7 @@ namespace ShopOfServices.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Image", b =>
@@ -290,7 +290,7 @@ namespace ShopOfServices.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Page", b =>
@@ -309,7 +309,7 @@ namespace ShopOfServices.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pages");
+                    b.ToTable("Pages", (string)null);
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.ResponseToComment", b =>
@@ -330,7 +330,7 @@ namespace ShopOfServices.Migrations
                     b.HasIndex("ResponseToId")
                         .IsUnique();
 
-                    b.ToTable("ResponseToComment");
+                    b.ToTable("ResponseToComment", (string)null);
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Service", b =>
@@ -358,7 +358,7 @@ namespace ShopOfServices.Migrations
 
                     b.HasIndex("SpecialistId");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Specialist", b =>
@@ -393,7 +393,7 @@ namespace ShopOfServices.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Specialists");
+                    b.ToTable("Specialists", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

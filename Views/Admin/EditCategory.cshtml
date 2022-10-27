@@ -21,14 +21,15 @@
         <input asp-for="Description" type="text" />
     </div>
     <div class="container-fluid">
-        @if (Model.Services != null)
-            @for (int i = 0; i < Model.Services.Length; i++)
+        @if (Model.ServiceNames != null)
+            @for (int i = 0; i < Model.ServiceNames.Length; i++)
             {
-                <input id="Services" type="text" value="@Model.Services[i].Name"/>
+                <input name="ServiceNames" type="text" value="@Model.ServiceNames[i]"/>
             }
     </div>
     <div class="container-fluid">
-        <input id="Services" type="text" />
+        <input name="ServiceNames" type="text" />
+        <input name="ServiceNames" type="text" />
     </div>
     <input type="submit" value="Сохранить" />
 </form>

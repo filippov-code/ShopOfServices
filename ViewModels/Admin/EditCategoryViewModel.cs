@@ -9,6 +9,6 @@ namespace ShopOfServices.ViewModels.Admin
         public string? OldImagePath { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public Service[]? Services { get; set; }
+        public string[] ServiceNames { get; set; }
     }
 }

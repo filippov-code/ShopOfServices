@@ -1,0 +1,14 @@
+﻿@model List<Category>
+@{
+    Layout = "_AdminLayout";
+}
+
+<h1>Цены</h1>
+@for (int i = 0; i < Model.Count; i++)
+{
+    <div class="border border-dark">@Model[i].Name</div>
+    @foreach (var service in Model[i].Services)
+    {
+        <div class="border border-dark">@service.Name</div>
+    }
+}
