@@ -12,8 +12,8 @@ using ShopOfServices.Data;
 namespace ShopOfServices.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20220925213629_Initial")]
-    partial class Initial
+    [Migration("20221027200034_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -222,19 +222,28 @@ namespace ShopOfServices.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ServiceSpecialist", b =>
+            modelBuilder.Entity("ShopOfServices.Models.Category", b =>
                 {
-                    b.Property<Guid>("ServicesId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("SpecialistsId")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ImageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ServicesId", "SpecialistsId");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("SpecialistsId");
+                    b.HasKey("Id");
 
-                    b.ToTable("ServiceSpecialist");
+                    b.HasIndex("ImageId");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Comment", b =>
@@ -286,6 +295,25 @@ namespace ShopOfServices.Migrations
                     b.ToTable("Images");
                 });
 
+            modelBuilder.Entity("ShopOfServices.Models.Page", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Html")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pages");
+                });
+
             modelBuilder.Entity("ShopOfServices.Models.ResponseToComment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -313,24 +341,24 @@ namespace ShopOfServices.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("FullDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ImageId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ShortDescription")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("SpecialistId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageId");
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("SpecialistId");
 
                     b.ToTable("Services");
                 });
@@ -421,19 +449,15 @@ namespace ShopOfServices.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ServiceSpecialist", b =>
+            modelBuilder.Entity("ShopOfServices.Models.Category", b =>
                 {
-                    b.HasOne("ShopOfServices.Models.Service", null)
+                    b.HasOne("ShopOfServices.Models.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ServicesId")
+                        .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShopOfServices.Models.Specialist", null)
-                        .WithMany()
-                        .HasForeignKey("SpecialistsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Comment", b =>
@@ -460,13 +484,17 @@ namespace ShopOfServices.Migrations
 
             modelBuilder.Entity("ShopOfServices.Models.Service", b =>
                 {
-                    b.HasOne("ShopOfServices.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
+                    b.HasOne("ShopOfServices.Models.Category", "Category")
+                        .WithMany("Services")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Image");
+                    b.HasOne("ShopOfServices.Models.Specialist", null)
+                        .WithMany("Services")
+                        .HasForeignKey("SpecialistId");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Specialist", b =>
@@ -480,9 +508,19 @@ namespace ShopOfServices.Migrations
                     b.Navigation("Image");
                 });
 
+            modelBuilder.Entity("ShopOfServices.Models.Category", b =>
+                {
+                    b.Navigation("Services");
+                });
+
             modelBuilder.Entity("ShopOfServices.Models.Service", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("ShopOfServices.Models.Specialist", b =>
+                {
+                    b.Navigation("Services");
                 });
 #pragma warning restore 612, 618
         }

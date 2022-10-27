@@ -72,10 +72,7 @@ namespace ShopOfServices.Controllers
         }
 
         #region Pages
-        public async Task<IActionResult> Main()
-        {
-            return await GetEditingPage(PageNames.Main, "Главная");
-        }
+
 
         public async Task<IActionResult> About()
         {
@@ -83,7 +80,7 @@ namespace ShopOfServices.Controllers
         }
         public async Task<IActionResult> Price()
         {
-            return await GetEditingPage(PageNames.Price, "Цены");
+            return null;
         }
 
         public async Task<IActionResult> Contacts()
@@ -120,46 +117,35 @@ namespace ShopOfServices.Controllers
             return RedirectToAction(nameof(Index));
         }
         #endregion
-        public IActionResult Services()
+        public IActionResult CategoriesAndServices()
         {
-            return View(_siteDbContext.Services.ToArray());
+            return View(_siteDbContext.Categories.Include(x => x.Services).ToList());
         }
 
         #region EditServices
         [HttpGet]
-        public IActionResult EditService(Guid id)
+        public IActionResult EditCategory(Guid id)
         {
-            var allSpecialistsCheckedBoxs = _siteDbContext
-                .Specialists
-                .Select(x => new SpecialistCheckBox 
-                { 
-                    Id = x.Id,
-                    FIO = x.GetFIO(),
-                    Post = x.Post
-                })
-                .ToArray();
-
             if (id != Guid.Empty)
             {
-                Service service = _siteDbContext.Services.Include(x => x.Image).Include(x => x.Specialists).SingleOrDefault(s => s.Id == id);
-                EditServiceViewModel model = new EditServiceViewModel
+                Category category = _siteDbContext.Categories.Include(x => x.Image).SingleOrDefault(s => s.Id == id);
+                EditCategoryViewModel model = new EditCategoryViewModel
                 {
                     Id = id,
-                    Title = service.Title,
-                    OldImagePath = service.Image.GetPath(),
-                    ShortDescription = service.ShortDescription,
-                    FullDescription = service.FullDescription,
-                    Specialists = service.Specialists.ToArray(),
-                    AllSpecialists = allSpecialistsCheckedBoxs
+                    Name = category.Name,
+                    OldImagePath = category.Image.GetPath(),
+                    Description = category.Description,
+                    Services = category.Services.ToArray()
                 };
                 return View(model);
             }
-            return View(new EditServiceViewModel { AllSpecialists = allSpecialistsCheckedBoxs});
+            return View(new EditCategoryViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditService(EditServiceViewModel model)
+        public async Task<IActionResult> EditCategory(EditCategoryViewModel model)
         {
+           
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -181,33 +167,26 @@ namespace ShopOfServices.Controllers
                 }
                 else newImage.Name = Image.EmptyImageName;
 
-                var newSpecialists = model.AllSpecialists
-                    .Where(i => i.IsChecked)
-                    .Select(x => _siteDbContext.Specialists
-                    .Single(y => y.Id == x.Id))
-                    .ToArray();
-
-                Service service = new Service
+                Category category = new Category
                 {
-                    Title = model.Title,
-                    Image = newImage,
-                    ShortDescription = model.ShortDescription,
-                    FullDescription = model.FullDescription,
-                    Specialists = newSpecialists
+                    Name = model.Name,
+                    Description = model.Description,
+                    Services = model.Services,
+                    Image = newImage
                 };
 
                 _siteDbContext.Images.Add(newImage);
-                _siteDbContext.Services.Add(service);
+                _siteDbContext.Categories.Add(category);
             }   
             else
             {
-                Service service = await _siteDbContext.Services.Include(x => x.Image).Include(x=>x.Specialists).SingleAsync(x => x.Id == model.Id);
+                Category category = await _siteDbContext.Categories.Include(x => x.Image).SingleAsync(x => x.Id == model.Id);
                 if (model.NewImageFile != null)
                 {
-                    if (service.Image.Name != Image.EmptyImageName)
+                    if (category.Image.Name != Image.EmptyImageName)
                     {
                         string imagesFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, Image.UploadsFolderPath);
-                        string imagesForDeletePath = Path.Combine(imagesFolderPath, service.Image.Name);
+                        string imagesForDeletePath = Path.Combine(imagesFolderPath, category.Image.Name);
                         System.IO.File.Delete(imagesForDeletePath);
                     }
 
@@ -218,37 +197,34 @@ namespace ShopOfServices.Controllers
                         await model.NewImageFile.CopyToAsync(stream);
                     }
 
-                    service.Image.Name = newImageName;
-                    _siteDbContext.Images.Update(service.Image);
+                    category.Image.Name = newImageName;
+                    _siteDbContext.Images.Update(category.Image);
                 }
 
-                service.Title = model.Title;
-                service.ShortDescription = model.ShortDescription;
-                service.FullDescription = model.FullDescription;
+                category.Name = model.Name;
+                category.Description = model.Description;
 
-                var checkedSpecialists = model.AllSpecialists.Where(x => x.IsChecked);
-                var newSpecialists = checkedSpecialists.Select(x => _siteDbContext.Specialists.Single(u => u.Id == x.Id));
+                category.Services.Clear();
+                foreach (var service in model.Services)
+                {
+                    category.Services.Add(service);
+                }
 
-                service.Specialists.Clear();
-                foreach (var specialist in newSpecialists)
-                    service.Specialists.Add(specialist);
-
-                _siteDbContext.Services.Update(service);
+                _siteDbContext.Categories.Update(category);
             }
 
             await _siteDbContext.SaveChangesAsync();
-            return RedirectToAction(nameof(Services));
+            return RedirectToAction(nameof(CategoriesAndServices));
         }
 
-        public IActionResult DeleteService(Guid id)
+        public IActionResult DeleteCategory(Guid id)
         {
-            var service = _siteDbContext.Services
-                .Include(x => x.Specialists)
+            Category category = _siteDbContext.Categories
                 .Include(x => x.Image)
                 .SingleOrDefault(x => x.Id == id);
-            _siteDbContext.Services.Remove(service);
+            _siteDbContext.Categories.Remove(category);
             _siteDbContext.SaveChanges();
-            return RedirectToAction(nameof(Services));
+            return RedirectToAction(nameof(CategoriesAndServices));
         }
         #endregion
 

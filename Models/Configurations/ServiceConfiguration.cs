@@ -8,8 +8,8 @@ namespace ShopOfServices.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<Service> builder)
         {
-            builder
-                .HasOne(x => x.Image);
+            //builder
+            //    .HasOne(x => x.Image);
 
             //builder
             //    .HasMany(x => x.Specialists)

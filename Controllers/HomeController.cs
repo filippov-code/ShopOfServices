@@ -34,27 +34,27 @@ namespace ShopOfServices.Controllers
 
         public IActionResult Services()
         {
-            return View(_siteDbContext.Services.Include(x => x.Image).ToArray());
+            return View(_siteDbContext.Services./*Include(x => x.Image).*/ToArray());
         }
 
         public async Task<IActionResult> Service(Guid id)
         {
             Service service = await _siteDbContext
                 .Services
-                .Include(x => x.Image)
-                .Include(x => x.Specialists)
+                //.Include(x => x.Image)
+                //.Include(x => x.Specialists)
                 .Include(x => x.Comments)
                 .SingleOrDefaultAsync(x => x.Id == id);
 
             ServiceViewModel serviceViewModel = new ServiceViewModel
             {
-                Id = service.Id,
-                Title = service.Title,
-                ImagePath = service.Image.GetPath(),
-                ShortDescription = service.ShortDescription,
-                FullDescription = service.FullDescription,
-                Specialists = service.Specialists,
-                Comments = service.Comments
+                //Id = service.Id,
+                //Title = service.Title,
+                //ImagePath = service.Image.GetPath(),
+                //ShortDescription = service.ShortDescription,
+                //FullDescription = service.FullDescription,
+                //Specialists = service.Specialists,
+                //Comments = service.Comments
             };
 
             return View(serviceViewModel);
@@ -90,7 +90,7 @@ namespace ShopOfServices.Controllers
             Service service = await _siteDbContext.Services.SingleOrDefaultAsync(x => x.Id == id);
             NewCommentViewModel newCommnetViewModel = new NewCommentViewModel
             {
-                ServiceName = service.Title,
+                //ServiceName = service.Title,
                 ServiceId = service.Id
             };
             return View(newCommnetViewModel);

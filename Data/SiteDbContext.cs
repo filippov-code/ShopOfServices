@@ -10,14 +10,11 @@ namespace ShopOfServices.Data
 {
     public class SiteDbContext : IdentityDbContext<IdentityUser>
     {
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Service> Services { get; set; }
-
         public DbSet<Specialist> Specialists { get; set; }
-
         public DbSet<Comment> Comments { get; set; }
-
         public DbSet<Image> Images { get; set; }
-
         public DbSet<Page> Pages { get; set; }
 
 

@@ -1,0 +1,24 @@
+﻿@model List<Category>
+@{
+    Layout = "_AdminLayout";
+}
+
+<div>
+    <a asp-controller="Admin" asp-action="EditCategory">Добавить категорию</a>
+</div>
+<div>
+    Все категории
+</div>
+<div class="container-fluid">
+    @foreach (var category in Model)
+    {
+        <div class="row">
+            <div class="border border-dark">
+                <a asp-controller="Admin" asp-action="EditCategory" asp-route-id="@category.Id"><h3>@category.Name</h3></a>
+                <h4>@category.Description</h4>
+                <a asp-controller="Admin" asp-action="DeleteService" asp-route-id="@category.Id">Удалить</a>
+            </div>
+        </div>
+    }
+</div>
+

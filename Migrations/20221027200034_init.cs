@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ShopOfServices.Migrations
 {
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,6 +58,19 @@ namespace ShopOfServices.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Html = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -167,20 +180,19 @@ namespace ShopOfServices.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Services",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShortDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FullDescription = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Services_Images_ImageId",
+                        name: "FK_Categories_Images_ImageId",
                         column: x => x.ImageId,
                         principalTable: "Images",
                         principalColumn: "Id",
@@ -211,6 +223,32 @@ namespace ShopOfServices.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Services",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SpecialistId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Services_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Services_Specialists_SpecialistId",
+                        column: x => x.SpecialistId,
+                        principalTable: "Specialists",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -231,30 +269,6 @@ namespace ShopOfServices.Migrations
                         principalTable: "Services",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ServiceSpecialist",
-                columns: table => new
-                {
-                    ServicesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SpecialistsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ServiceSpecialist", x => new { x.ServicesId, x.SpecialistsId });
-                    table.ForeignKey(
-                        name: "FK_ServiceSpecialist_Services_ServicesId",
-                        column: x => x.ServicesId,
-                        principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);//changed cascade to restrict
-                    table.ForeignKey(
-                        name: "FK_ServiceSpecialist_Specialists_SpecialistsId",
-                        column: x => x.SpecialistsId,
-                        principalTable: "Specialists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);//changed cascade to restrict
                 });
 
             migrationBuilder.CreateTable(
@@ -316,6 +330,11 @@ namespace ShopOfServices.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Categories_ImageId",
+                table: "Categories",
+                column: "ImageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Comments_ServiceId",
                 table: "Comments",
                 column: "ServiceId");
@@ -327,14 +346,14 @@ namespace ShopOfServices.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_ImageId",
+                name: "IX_Services_CategoryId",
                 table: "Services",
-                column: "ImageId");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ServiceSpecialist_SpecialistsId",
-                table: "ServiceSpecialist",
-                column: "SpecialistsId");
+                name: "IX_Services_SpecialistId",
+                table: "Services",
+                column: "SpecialistId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Specialists_ImageId",
@@ -360,10 +379,10 @@ namespace ShopOfServices.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ResponseToComment");
+                name: "Pages");
 
             migrationBuilder.DropTable(
-                name: "ServiceSpecialist");
+                name: "ResponseToComment");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -375,10 +394,13 @@ namespace ShopOfServices.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Specialists");
+                name: "Services");
 
             migrationBuilder.DropTable(
-                name: "Services");
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Specialists");
 
             migrationBuilder.DropTable(
                 name: "Images");

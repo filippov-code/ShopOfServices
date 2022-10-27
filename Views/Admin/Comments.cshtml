@@ -18,7 +18,7 @@
             {
                 <div class="border border-dark">
                     <div>@comment.SenderName</div>
-                    <div>На @comment.Service.Title</div>
+                    @*<div>На @comment.Service.Title</div>*@
                     <div>@comment.Message</div>
                     <div>
                         <a asp-controller="Admin" asp-action="DeleteComment" asp-route-id="@comment.Id">Удалить</a>
@@ -34,7 +34,7 @@
             {
                 <div class="border border-dark">
                     <div>@comment.SenderName</div>
-                    <div>На @comment.Service.Title</div>
+                    @*<div>На @comment.Service.Title</div>*@
                     <div>@comment.Message</div>
                     <div>
                         <a asp-controller="Admin" asp-action="PostComment" asp-route-id="@comment.Id">Опубликовать</a>
