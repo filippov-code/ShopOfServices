@@ -3,6 +3,8 @@
     Layout = "_AdminLayout";
 }
 
+<script src="~/js/editcategory.js"></script>
+
 <h1>Редактировать категорию</h1>
 <form asp-controller="Admin" asp-action="EditCategory" enctype="multipart/form-data" method="post">
     <div asp-validation-summary="All"></div>
@@ -27,9 +29,11 @@
                 <input name="ServiceNames" type="text" value="@Model.ServiceNames[i]"/>
             }
     </div>
-    <div class="container-fluid">
+    <div id="servicesInputFieldContainer" class="container-fluid">
         <input name="ServiceNames" type="text" />
-        <input name="ServiceNames" type="text" />
+    </div>
+    <div>
+        <button onclick="addServiceInput()" type="button">+</button>
     </div>
     <input type="submit" value="Сохранить" />
 </form>

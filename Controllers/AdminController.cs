@@ -81,7 +81,38 @@ namespace ShopOfServices.Controllers
         public async Task<IActionResult> EditPrices()
         {
             var categories = _siteDbContext.Categories.Include(x => x.Services).ToList();
-            return View(categories);
+
+            List<EditServicePriceViewModel> services = new List<EditServicePriceViewModel>();
+            foreach (var category in categories)
+            {
+                foreach (var service in category.Services)
+                {
+                    services.Add(
+                       new EditServicePriceViewModel
+                       {
+                           Id = service.Id,
+                           Name = service.Name,
+                           Price = service.Price,
+                           CategoryName = category.Name
+                       }
+                    );
+                }
+            }
+            return View(services.ToArray());
+            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPrices(EditServicePriceViewModel[] services)
+        {
+            foreach (var service in services)
+            {
+                Service serviceToUpdate = await _siteDbContext.Services.SingleAsync(x => x.Id == service.Id);
+                serviceToUpdate.Price = service.Price;
+                _siteDbContext.Services.Update(serviceToUpdate);
+            }
+            await _siteDbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(EditPrices));
         }
 
         public async Task<IActionResult> Contacts()

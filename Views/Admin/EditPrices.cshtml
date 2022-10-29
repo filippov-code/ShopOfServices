@@ -1,14 +1,28 @@
-﻿@model List<Category>
+﻿@using ShopOfServices.ViewModels.Admin
+@model EditServicePriceViewModel[]
 @{
     Layout = "_AdminLayout";
 }
 
 <h1>Цены</h1>
-@for (int i = 0; i < Model.Count; i++)
-{
-    <div class="border border-dark">@Model[i].Name</div>
-    @foreach (var service in Model[i].Services)
+<form asp-controller="Admin" asp-action="EditPrices" method="post">
+    @for (int i = 0; i < Model.Length; i++)
     {
-        <div class="border border-dark">@service.Name</div>
+        if (i == 0 || Model[i-1].CategoryName != Model[i].CategoryName)
+        {
+            <div class="border border-dark">
+                @Model[i].CategoryName
+                <input asp-for="@Model[i].CategoryName" type="hidden"/>
+            </div>
+        }
+        <div class="border border-light">
+            <label>@Model[i].Name</label>
+            <input asp-for="@Model[i].Price" type="text"/>
+            <input asp-for="@Model[i].Id" type="hidden" />
+            <input asp-for="@Model[i].Name" type="hidden" />
+        </div>
     }
-}
+
+
+    <input type="submit" value="Сохранить"/>
+</form>
