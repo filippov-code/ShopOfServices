@@ -249,7 +249,7 @@ namespace ShopOfServices.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "Reviews",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -262,30 +262,11 @@ namespace ShopOfServices.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Services_ServiceId",
+                        name: "FK_Reviews_Services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ResponseToComment",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ResponseToId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Response = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ResponseToComment", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ResponseToComment_Comments_ResponseToId",
-                        column: x => x.ResponseToId,
-                        principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -335,15 +316,9 @@ namespace ShopOfServices.Migrations
                 column: "ImageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_ServiceId",
-                table: "Comments",
+                name: "IX_Reviews_ServiceId",
+                table: "Reviews",
                 column: "ServiceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ResponseToComment_ResponseToId",
-                table: "ResponseToComment",
-                column: "ResponseToId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Services_CategoryId",
@@ -382,16 +357,13 @@ namespace ShopOfServices.Migrations
                 name: "Pages");
 
             migrationBuilder.DropTable(
-                name: "ResponseToComment");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Services");

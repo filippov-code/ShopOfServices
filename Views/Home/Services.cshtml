@@ -1,22 +1,19 @@
-﻿@model ICollection<Service>;
+﻿@model Category[];
 @{
     Layout = "_Layout";
 }
 
-<div class="container">
-
-    @foreach(var service in Model)
+@foreach (var category in Model)
+{
+    <div class="border border-dark">
+        @category.Name
+    </div>
+    foreach (var service in category.Services)
     {
-        <div class="row border border-dark m-2">
-            <div>
-                @*<a asp-controller="Home" asp-action="@nameof(HomeController.Service)" asp-route-id="@service.Id"><h3>@service.Title</h3></a>*@
-            </div>
-            <div>
-                @*<h4>@service.ShortDescription</h4>*@
-            </div>
+        <div class="border border-light">
+            @service.Name
         </div>
     }
-
-</div>
+}
 
 

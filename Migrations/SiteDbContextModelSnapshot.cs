@@ -241,10 +241,44 @@ namespace ShopOfServices.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("ShopOfServices.Models.Comment", b =>
+            modelBuilder.Entity("ShopOfServices.Models.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("ShopOfServices.Models.Page", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Html")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pages");
+                });
+
+            modelBuilder.Entity("ShopOfServices.Models.Review", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -275,62 +309,7 @@ namespace ShopOfServices.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Comments", (string)null);
-                });
-
-            modelBuilder.Entity("ShopOfServices.Models.Image", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Images", (string)null);
-                });
-
-            modelBuilder.Entity("ShopOfServices.Models.Page", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Html")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pages", (string)null);
-                });
-
-            modelBuilder.Entity("ShopOfServices.Models.ResponseToComment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Response")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ResponseToId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResponseToId")
-                        .IsUnique();
-
-                    b.ToTable("ResponseToComment", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Service", b =>
@@ -358,7 +337,7 @@ namespace ShopOfServices.Migrations
 
                     b.HasIndex("SpecialistId");
 
-                    b.ToTable("Services", (string)null);
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Specialist", b =>
@@ -393,7 +372,7 @@ namespace ShopOfServices.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Specialists", (string)null);
+                    b.ToTable("Specialists");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -458,7 +437,7 @@ namespace ShopOfServices.Migrations
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("ShopOfServices.Models.Comment", b =>
+            modelBuilder.Entity("ShopOfServices.Models.Review", b =>
                 {
                     b.HasOne("ShopOfServices.Models.Service", "Service")
                         .WithMany("Comments")
@@ -467,17 +446,6 @@ namespace ShopOfServices.Migrations
                         .IsRequired();
 
                     b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("ShopOfServices.Models.ResponseToComment", b =>
-                {
-                    b.HasOne("ShopOfServices.Models.Comment", "ResponseTo")
-                        .WithOne()
-                        .HasForeignKey("ShopOfServices.Models.ResponseToComment", "ResponseToId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ResponseTo");
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Service", b =>

@@ -16,7 +16,7 @@
             <div class="border border-dark">
                 <a asp-controller="Admin" asp-action="EditCategory" asp-route-id="@category.Id"><h3>@category.Name</h3></a>
                 <h4>@category.Description</h4>
-                <a asp-controller="Admin" asp-action="DeleteService" asp-route-id="@category.Id">Удалить</a>
+                <a asp-controller="Admin" asp-action="DeleteCategory" asp-route-id="@category.Id">Удалить</a>
             </div>
         </div>
     }

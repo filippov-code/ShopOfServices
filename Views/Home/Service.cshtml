@@ -4,7 +4,7 @@
 }
 @{
 
-    List<Comment> publishedComments = new();
+    List<Review> publishedComments = new();
     if (Model.Comments != null)
     {
         publishedComments = Model.Comments.Where(x => x.IsPublished).ToList();

@@ -82,35 +82,64 @@ namespace ShopOfServices.Controllers
         {
             var categories = _siteDbContext.Categories.Include(x => x.Services).ToList();
 
-            List<EditServicePriceViewModel> services = new List<EditServicePriceViewModel>();
+            List<EditCategoryViewModel> categoryModels = new();
             foreach (var category in categories)
             {
+                List<EditServiceViewModel> serviceModels = new();
                 foreach (var service in category.Services)
                 {
-                    services.Add(
-                       new EditServicePriceViewModel
-                       {
-                           Id = service.Id,
-                           Name = service.Name,
-                           Price = service.Price,
-                           CategoryName = category.Name
-                       }
+                    serviceModels.Add(
+                        new EditServiceViewModel
+                        {
+                            Id = service.Id,
+                            Name = service.Name,
+                            Price = service.Price
+                        }
                     );
                 }
+
+                categoryModels.Add(
+                    new EditCategoryViewModel
+                    {
+                        Name = category.Name,
+                        Services = serviceModels.ToArray()
+                    }
+                );
+
+                //foreach (var service in category.Services)
+                //{
+                //    services.Add(
+                //       new EditServiceViewModel
+                //       {
+                //           Id = service.Id,
+                //           Name = service.Name,
+                //           Price = service.Price,
+                //           CategoryName = category.Name
+                //       }
+                //    );
+                //}
             }
-            return View(services.ToArray());
+            return View(categoryModels.ToArray());
             
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditPrices(EditServicePriceViewModel[] services)
+        public async Task<IActionResult> EditPrices(EditCategoryViewModel[] categoryModels)
         {
-            foreach (var service in services)
+            foreach (var category in categoryModels)
             {
-                Service serviceToUpdate = await _siteDbContext.Services.SingleAsync(x => x.Id == service.Id);
-                serviceToUpdate.Price = service.Price;
-                _siteDbContext.Services.Update(serviceToUpdate);
+                if (category.Services == null) 
+                    continue;
+
+                foreach (var service in category.Services)
+                {
+                    Service serviceToUpdate = await _siteDbContext.Services.SingleAsync(x => x.Id == service.Id);
+                    serviceToUpdate.Price = service.Price;
+                    _siteDbContext.Services.Update(serviceToUpdate);
+                }
+                
             }
+
             await _siteDbContext.SaveChangesAsync();
             return RedirectToAction(nameof(EditPrices));
         }
@@ -167,7 +196,7 @@ namespace ShopOfServices.Controllers
                     Name = category.Name,
                     OldImagePath = category.Image.GetPath(),
                     Description = category.Description,
-                    ServiceNames = category.Services.Select(x => x.Name).ToArray()
+                    Services = category.Services.Select(x => new EditServiceViewModel { Id = x.Id, Name = x.Name}).ToArray()
                 };
                 return View(model);
             }
@@ -203,7 +232,7 @@ namespace ShopOfServices.Controllers
                 {
                     Name = model.Name,
                     Description = model.Description,
-                    Services = model.ServiceNames.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => new Service { Name = x}).ToArray(),
+                    Services = model.Services.Where(x => !string.IsNullOrWhiteSpace(x.Name)).Select(x => new Service { Name = x.Name}).ToArray(),
                     Image = newImage
                 };
 
@@ -236,11 +265,31 @@ namespace ShopOfServices.Controllers
                 category.Name = model.Name;
                 category.Description = model.Description;
 
-                category.Services.Clear();
-                foreach (var serviceName in model.ServiceNames)
+                //category.Services.Clear();
+                foreach (var service in model.Services)
                 {
-                    if (!string.IsNullOrWhiteSpace(serviceName))
-                        category.Services.Add(new Service { Name = serviceName});
+                    if (!string.IsNullOrWhiteSpace(service.Name))
+                    {
+                        if (service.Id != Guid.Empty)
+                        {
+                            //обновить
+                            Service serviceForUpdate = await _siteDbContext.Services.SingleAsync(x => x.Id == service.Id);
+                            serviceForUpdate.Name = service.Name;
+                            _siteDbContext.Services.Update(serviceForUpdate);
+                        }
+                        else
+                        {
+                            //добавить
+                            category.Services.Add(new Service { Name = service.Name });
+                        }
+                    }
+                    else if (service.Id != Guid.Empty)
+                    {
+                        //удалить
+                        Service serviceForDelete = await _siteDbContext.Services.SingleAsync(x => x.Id == service.Id);
+                        category.Services.Remove(serviceForDelete);
+                        _siteDbContext.Services.Remove(serviceForDelete);
+                    }
                 }
 
                 _siteDbContext.Categories.Update(category);
@@ -254,19 +303,20 @@ namespace ShopOfServices.Controllers
         {
             Category category = _siteDbContext.Categories
                 .Include(x => x.Image)
+                .Include(x => x.Services)
                 .SingleOrDefault(x => x.Id == id);
             _siteDbContext.Categories.Remove(category);
             _siteDbContext.SaveChanges();
             return RedirectToAction(nameof(CategoriesAndServices));
         }
-        #endregion
+#endregion
 
         public IActionResult Specialists()
         {
             return View(_siteDbContext.Specialists.ToArray());
         }
         
-        #region EditSpecialists
+#region EditSpecialists
         [HttpGet]
         public IActionResult EditSpecialist(Guid id)
         {
@@ -372,7 +422,7 @@ namespace ShopOfServices.Controllers
             _siteDbContext.SaveChanges();
             return RedirectToAction(nameof(Specialists));
         }
-        #endregion
+#endregion
 
         private string GetUniqueFileName(string fileName)
         {
@@ -383,27 +433,27 @@ namespace ShopOfServices.Controllers
 
         }
 
-        public IActionResult Comments()
+        public IActionResult Reviews()
         {
-            List<Comment> comments = _siteDbContext.Comments.Include(x => x.Service).ToList();
+            List<Review> comments = _siteDbContext.Reviews.Include(x => x.Service).ToList();
             return View(comments);
         }
 
-        public async Task<IActionResult> PostComment(Guid id)
+        public async Task<IActionResult> PostReview(Guid id)
         {
-            Comment comment = await _siteDbContext.Comments.SingleOrDefaultAsync(x => x.Id == id);
+            Review comment = await _siteDbContext.Reviews.SingleOrDefaultAsync(x => x.Id == id);
             comment.IsPublished = true;
-            _siteDbContext.Comments.Update(comment);
+            _siteDbContext.Reviews.Update(comment);
             await _siteDbContext.SaveChangesAsync();
-            return RedirectToAction(nameof(Comments), id);
+            return RedirectToAction(nameof(Reviews), id);
         }
 
-        public async Task<IActionResult> DeleteComment(Guid id)
+        public async Task<IActionResult> DeleteReview(Guid id)
         {
-            Comment comment = await _siteDbContext.Comments.SingleOrDefaultAsync(x => x.Id == id);
-            _siteDbContext.Comments.Remove(comment);
+            Review comment = await _siteDbContext.Reviews.SingleOrDefaultAsync(x => x.Id == id);
+            _siteDbContext.Reviews.Remove(comment);
             await _siteDbContext.SaveChangesAsync();
-            return RedirectToAction(nameof(Comments), id);
+            return RedirectToAction(nameof(Reviews), id);
         }
     }
 }

@@ -12,7 +12,7 @@ using ShopOfServices.Data;
 namespace ShopOfServices.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20221027200034_init")]
+    [Migration("20221030181822_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -246,40 +246,6 @@ namespace ShopOfServices.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("ShopOfServices.Models.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsPublished")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SenderEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SenderName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ServiceId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("ShopOfServices.Models.Image", b =>
                 {
                     b.Property<Guid>("Id")
@@ -314,25 +280,38 @@ namespace ShopOfServices.Migrations
                     b.ToTable("Pages");
                 });
 
-            modelBuilder.Entity("ShopOfServices.Models.ResponseToComment", b =>
+            modelBuilder.Entity("ShopOfServices.Models.Review", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Response")
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ResponseToId")
+                    b.Property<string>("SenderEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ServiceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ResponseToId")
-                        .IsUnique();
+                    b.HasIndex("ServiceId");
 
-                    b.ToTable("ResponseToComment");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Service", b =>
@@ -460,7 +439,7 @@ namespace ShopOfServices.Migrations
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("ShopOfServices.Models.Comment", b =>
+            modelBuilder.Entity("ShopOfServices.Models.Review", b =>
                 {
                     b.HasOne("ShopOfServices.Models.Service", "Service")
                         .WithMany("Comments")
@@ -469,17 +448,6 @@ namespace ShopOfServices.Migrations
                         .IsRequired();
 
                     b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("ShopOfServices.Models.ResponseToComment", b =>
-                {
-                    b.HasOne("ShopOfServices.Models.Comment", "ResponseTo")
-                        .WithOne()
-                        .HasForeignKey("ShopOfServices.Models.ResponseToComment", "ResponseToId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ResponseTo");
                 });
 
             modelBuilder.Entity("ShopOfServices.Models.Service", b =>

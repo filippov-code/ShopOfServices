@@ -31,7 +31,7 @@
                         <a asp-controller="Home" asp-action="@nameof(HomeController.Prices)">Прайс</a>
                     </div>
                     <div class="col-1 border border-dark">
-                        <a asp-controller="Home" asp-action="@nameof(HomeController.Comments)">Отзывы</a>
+                        <a asp-controller="Home" asp-action="@nameof(HomeController.Reviews)">Отзывы</a>
                     </div>
                     <div class="col-1 border border-dark">
                         <a asp-controller="Home" asp-action="@nameof(HomeController.Contacts)">Контакты</a>
@@ -46,6 +46,9 @@
                 <div class="row justify-content-start">
                     <div class="col">
                         FOOTER INFO
+                    </div>
+                    <div>
+                        <a asp-controller="Home" asp-action="AddReview">Оставить отзыв</a>
                     </div>
                 </div>
             </div>

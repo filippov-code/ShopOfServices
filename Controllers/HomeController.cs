@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShopOfServices.Data;
 using ShopOfServices.Models;
@@ -20,9 +21,14 @@ namespace ShopOfServices.Controllers
 
         public async Task<IActionResult> Index()
         {
-            Page page = await _siteDbContext.Pages.Where(x => x.Name == PageNames.Main).SingleOrDefaultAsync();
+            var mainPageModel = new MainPageViewModel
+            {
+                Categories = _siteDbContext.Categories.ToArray(),
+                Specialists = _siteDbContext.Specialists.ToArray(),
+                Reviews = _siteDbContext.Reviews.Where(x => x.IsPublished).ToArray()
+            };
 
-            return View(model: page.Html);
+            return View(mainPageModel);
         }
 
         public async Task<IActionResult> About()
@@ -34,30 +40,13 @@ namespace ShopOfServices.Controllers
 
         public IActionResult Services()
         {
-            return View(_siteDbContext.Services./*Include(x => x.Image).*/ToArray());
+            var categories = _siteDbContext.Categories.Include(x => x.Services).ToArray();
+            return View(categories);
         }
 
         public async Task<IActionResult> Service(Guid id)
         {
-            Service service = await _siteDbContext
-                .Services
-                //.Include(x => x.Image)
-                //.Include(x => x.Specialists)
-                .Include(x => x.Comments)
-                .SingleOrDefaultAsync(x => x.Id == id);
-
-            ServiceViewModel serviceViewModel = new ServiceViewModel
-            {
-                //Id = service.Id,
-                //Title = service.Title,
-                //ImagePath = service.Image.GetPath(),
-                //ShortDescription = service.ShortDescription,
-                //FullDescription = service.FullDescription,
-                //Specialists = service.Specialists,
-                //Comments = service.Comments
-            };
-
-            return View(serviceViewModel);
+            return null;
         }
 
         public IActionResult Specialists()
@@ -79,52 +68,53 @@ namespace ShopOfServices.Controllers
             return View(model: page.Html);
         }
 
-        public IActionResult Comments()
+        public IActionResult Reviews()
         {
-            List<Comment> comments = _siteDbContext.Comments.Where(x => x.IsPublished).ToList();
-            return View(comments);
+            var reviews = _siteDbContext.Reviews.Where(x => x.IsPublished).ToList();
+            return View(reviews);
         }
 
-        public async Task<IActionResult> AddComment(Guid id)
+        public async Task<IActionResult> AddReview()
         {
-            Service service = await _siteDbContext.Services.SingleOrDefaultAsync(x => x.Id == id);
-            NewCommentViewModel newCommnetViewModel = new NewCommentViewModel
+            var categories = _siteDbContext.Categories.Include(x => x.Services).ToArray();
+            var reviewModel = new AddReviewViewModel
             {
-                //ServiceName = service.Title,
-                ServiceId = service.Id
+                Categories = categories
             };
-            return View(newCommnetViewModel);
+
+            return View(reviewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddComment(NewCommentViewModel model)
+        public async Task<IActionResult> AddReview(AddReviewViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            Service service = await _siteDbContext.Services.SingleOrDefaultAsync(x => x.Id == model.ServiceId);
-            if (service == null)
+            if (model.SelectedServiceId == Guid.Empty)
+            {
+                ModelState.AddModelError("", "Выберите услугу");
+                return View(model);
+            }
+            var selectedService = await _siteDbContext.Services.SingleOrDefaultAsync(x => x.Id == model.SelectedServiceId);
+            if (selectedService == null)
             {
                 ModelState.AddModelError("", "Такая услуга не найдена");
                 return View(model);
             }
-
-            Comment comment = new Comment()
+            var review = new Review
             {
-                CreateAt = DateTime.Now,
                 SenderEmail = model.Email,
                 SenderName = model.Name,
+                CreateAt = DateTime.Now,
                 IsPublished = false,
                 Message = model.Message,
-                Service = service
+                Service = selectedService
             };
-
-            await _siteDbContext.Comments.AddAsync(comment);
+            await _siteDbContext.Reviews.AddAsync(review);
             await _siteDbContext.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Service), new { id = model.ServiceId });
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Contacts()

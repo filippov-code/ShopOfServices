@@ -1,0 +1,40 @@
+﻿@using ShopOfServices.Controllers;
+@model ShopOfServices.ViewModels.Home.AddReviewViewModel
+@{
+    Layout = "_Layout";
+}
+
+<h2>Оставить отзыв</h2>
+<form asp-controller="Home" asp-action="@nameof(HomeController.AddReview)" method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="border border-dark">
+        <label>Ваш Email для связи</label>
+        <input asp-for="Email" type="email" required/>
+    </div>
+    <div class="border border-dark">
+        <label>Ваше имя</label>
+        <input asp-for="Name" type="text" required/>
+    </div>
+    <div class="border border-dark">
+        <label>Выберите услугу которой вы пользовались</label>
+        <select asp-for="@Model.SelectedServiceId" required>
+            <option value="">Выберите услугу</option>
+            @foreach (var category in Model.Categories)
+            {
+                <optgroup label="@category.Name">
+                    @foreach (var service in category.Services)
+                    {
+                        <option value="@service.Id">@service.Name</option>
+                    }
+                </optgroup>
+            }
+        </select>
+    </div>
+    <div class="border border-dark">
+        <label>Отзыв</label>
+        <textarea asp-for="Message" cols="10" rows="10" required></textarea>
+    </div>
+    <div class="border border-dark">
+        <input type="submit" />
+    </div>
+</form>

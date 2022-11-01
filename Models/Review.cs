@@ -2,7 +2,7 @@
 
 namespace ShopOfServices.Models
 {
-    public class Comment
+    public class Review
     {
         public Guid Id { get; set; }
         public Service Service { get; set; }

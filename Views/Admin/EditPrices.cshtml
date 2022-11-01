@@ -1,5 +1,5 @@
 ﻿@using ShopOfServices.ViewModels.Admin
-@model EditServicePriceViewModel[]
+@model EditCategoryViewModel[]
 @{
     Layout = "_AdminLayout";
 }
@@ -8,19 +8,18 @@
 <form asp-controller="Admin" asp-action="EditPrices" method="post">
     @for (int i = 0; i < Model.Length; i++)
     {
-        if (i == 0 || Model[i-1].CategoryName != Model[i].CategoryName)
-        {
-            <div class="border border-dark">
-                @Model[i].CategoryName
-                <input asp-for="@Model[i].CategoryName" type="hidden"/>
-            </div>
-        }
-        <div class="border border-light">
-            <label>@Model[i].Name</label>
-            <input asp-for="@Model[i].Price" type="text"/>
-            <input asp-for="@Model[i].Id" type="hidden" />
+        <div class="border border-dark">
+            @Model[i].Name
             <input asp-for="@Model[i].Name" type="hidden" />
         </div>
+        for (int j = 0; j < Model[i].Services.Length; j++)
+        {
+            <div class="border border-light">
+                <label>@Model[i].Services[j].Name</label>
+                <input asp-for="@Model[i].Services[j].Price" type="text" />
+                <input asp-for="@Model[i].Services[j].Id" type="hidden" />
+            </div>
+        }
     }
 
 

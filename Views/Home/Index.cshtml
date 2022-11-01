@@ -1,6 +1,35 @@
-﻿@model string
+﻿@model ShopOfServices.ViewModels.Home.MainPageViewModel
 @{
     Layout = "_Layout";
 }
 
-@Html.Raw(Model)
+<div class="border border-dark container-fluid">
+    <div class="row">
+        @foreach (var category in Model.Categories)
+        {
+            <div class="border border-dark col">
+                @category.Name
+            </div>
+        }
+    </div>
+</div>
+<div class="border border-dark container-fluid">
+    <div class="row">
+        @foreach (var specialist in Model.Specialists)
+        {
+            <div class="border border-dark col">
+                @specialist.GetFIO()
+            </div>
+        }
+    </div>
+</div>
+<div class="border border-dark container-fluid">
+    <div class="row">
+        @foreach (var review in Model.Reviews)
+        {
+            <div class="border border-dark col">
+                @review.Message
+            </div>
+        }
+    </div>
+</div>

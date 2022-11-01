@@ -1,10 +1,10 @@
-﻿@model ICollection<Comment>
+﻿@model ICollection<Review>
 @{
     Layout = "_AdminLayout";
 }
 @{
-    List<Comment> piblishedComments = Model.Where(x => x.IsPublished).ToList();
-    List<Comment> notPublishedComments = Model.Where(x => !x.IsPublished).ToList();
+    List<Review> piblishedComments = Model.Where(x => x.IsPublished).ToList();
+    List<Review> notPublishedComments = Model.Where(x => !x.IsPublished).ToList();
 }
 
 <h2>Управление отзывами</h2>
@@ -21,7 +21,7 @@
                     @*<div>На @comment.Service.Title</div>*@
                     <div>@comment.Message</div>
                     <div>
-                        <a asp-controller="Admin" asp-action="DeleteComment" asp-route-id="@comment.Id">Удалить</a>
+                        <a asp-controller="Admin" asp-action="DeleteReview" asp-route-id="@comment.Id">Удалить</a>
                     </div>
                 </div>
             }
@@ -37,8 +37,8 @@
                     @*<div>На @comment.Service.Title</div>*@
                     <div>@comment.Message</div>
                     <div>
-                        <a asp-controller="Admin" asp-action="PostComment" asp-route-id="@comment.Id">Опубликовать</a>
-                        <a asp-controller="Admin" asp-action="DeleteComment" asp-route-id="@comment.Id">Удалить</a>
+                        <a asp-controller="Admin" asp-action="PostReview" asp-route-id="@comment.Id">Опубликовать</a>
+                        <a asp-controller="Admin" asp-action="DeleteReview" asp-route-id="@comment.Id">Удалить</a>
                     </div>
                 </div>
             }

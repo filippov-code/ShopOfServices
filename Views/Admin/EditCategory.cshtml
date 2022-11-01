@@ -22,15 +22,20 @@
         <label>Короткое описание</label>
         <input asp-for="Description" type="text" />
     </div>
-    <div class="container-fluid">
-        @if (Model.ServiceNames != null)
-            @for (int i = 0; i < Model.ServiceNames.Length; i++)
+    <div id="oldServicesInputFieldsContainer" class="container-fluid">
+        @if (Model.Services != null)
+            @for (int i = 0; i < Model.Services.Length; i++)
             {
-                <input name="ServiceNames" type="text" value="@Model.ServiceNames[i]"/>
+                <div>
+                    <input asp-for="@Model.Services[@i].Id" type="hidden"/>
+                    <input asp-for="@Model.Services[@i].Name" type="text"/>
+                </div>
             }
     </div>
     <div id="servicesInputFieldContainer" class="container-fluid">
-        <input name="ServiceNames" type="text" />
+        <div>
+            <input name="Services[@(Model.Services != null ? Model.Services.Length : 0)].Name" type="text" />
+        </div>
     </div>
     <div>
         <button onclick="addServiceInput()" type="button">+</button>
