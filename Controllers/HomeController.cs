@@ -23,8 +23,8 @@ namespace ShopOfServices.Controllers
         {
             var mainPageModel = new MainPageViewModel
             {
-                Categories = _siteDbContext.Categories.ToArray(),
-                Specialists = _siteDbContext.Specialists.ToArray(),
+                Categories = _siteDbContext.Categories.Include(x => x.Image).ToArray(),
+                Specialists = _siteDbContext.Specialists.Include(x => x.Image).ToArray(),
                 Reviews = _siteDbContext.Reviews.Where(x => x.IsPublished).ToArray()
             };
 

@@ -2,19 +2,32 @@
 <html>
     <head>
         <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/styles.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </head>
     <body>
         <header class="border border-dark">
             <div class="container-fluid">
-                <div class="row justify-content-between">
-                    <div class="col-3 border border-dark">
-                        LOGO
+                <div class="row justify-content-between" style="height: 150px;">
+                    <div class="col-md-4 border justify-content-end">
+                        <span>LOCATION</span>
                     </div>
-                    <div class="col-4 border border-dark">
-                        SHORT CONTACTS
+                    <div class="col-md border">
+                        <img src="~/Images/static/location-icon.png" class="flex-image" />
+                    </div>
+                    <div class="col-md-3 border text-center h-100">
+                        <img src="~/Images/static/logo.png" class="flex-image" />
+                    </div>
+                    <div class="col-md border">
+                        <img src="~/Images/static/workhours-icon.png" class="flex-image" />
+                    </div>
+                    <div class="col-md-4 border">
+                        TEXT
+                        text
                     </div>
                 </div>
-                <nav class="row justify-content-start">
+                
+                <nav class="row justify-content-center" style="height: 90px">
                     <div class="col-1 border border-dark">
                         <a asp-controller="Home" asp-action="@nameof(HomeController.Index)">Главная</a>
                     </div>
@@ -39,6 +52,7 @@
                 </nav>
             </div>
         </header>
+
         @RenderBody()
 
         <footer class="border border-dark">

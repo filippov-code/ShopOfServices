@@ -4,31 +4,61 @@
 }
 
 <div class="border border-dark container-fluid">
-    <div class="row">
+    <div class="row justify-content-center">
         @foreach (var category in Model.Categories)
         {
-            <div class="border border-dark col">
+            @*<div class="border border-dark col">
                 @category.Name
+            </div>*@
+            <div class="card" style="width: 18rem;">
+                <img src="@category.Image.GetPath()" class="card-img-top" alt="@category.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@category.Name</h5>
+                    <p class="card-text">@category.Description</p>
+                    <a asp-controller="Home" asp-action="Category" asp-route-id="@category.Id" class="btn btn-primary">Подробнее</a>
+                </div>
             </div>
         }
     </div>
 </div>
 <div class="border border-dark container-fluid">
-    <div class="row">
+    <div class="row align-content-center">
+        <h5>Наши специалисты</h5>
+    </div>
+    <div class="row justify-content-center">
         @foreach (var specialist in Model.Specialists)
         {
-            <div class="border border-dark col">
+            @*<div class="border border-dark col">
                 @specialist.GetFIO()
+            </div>*@
+            <div class="card" style="width: 18rem;">
+                <img src="@specialist.Image.GetPath()" class="card-img-top" alt="@specialist.GetFIO()">
+                <div class="card-body">
+                    <h5 class="card-title">@specialist.GetFIO()</h5>
+                    <p class="card-text">@specialist.Description</p>
+                    <a asp-controller="Home" asp-action="Specialist" asp-route-id="@specialist.Id" class="btn btn-primary">Подробнее</a>
+                </div>
             </div>
         }
     </div>
 </div>
 <div class="border border-dark container-fluid">
-    <div class="row">
+    <div class="row align-content-center">
+        <h5>Отзывы клиентов</h5>
+    </div>
+    <div class="row justify-content-center">
         @foreach (var review in Model.Reviews)
         {
-            <div class="border border-dark col">
+            @*<div class="border border-dark col">
                 @review.Message
+            </div>*@
+            <div class="card">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>@review.Message</p>
+                        <footer class="blockquote-footer">@review.SenderName</footer>
+                    </blockquote>
+                </div>
             </div>
         }
     </div>
