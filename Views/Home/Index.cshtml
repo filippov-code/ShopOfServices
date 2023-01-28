@@ -3,27 +3,57 @@
     Layout = "_Layout";
 }
 
-<div class="border border-dark container-fluid">
-    <div class="row">
+<div class="container pb-4">
+    <div class="row justify-content-center pb-2">
+        <div class="col-8 text-center">
+            <h2>Наши услуги</h2>
+            <p>Все услуги проводятся на высокоточном оборудовании с использованием самых современных технологий</p>
+        </div>
+    </div>
+    <div class="row justify-content-center gy-3">
+        @for (int i = 0; i < 3; i++)
         @foreach (var category in Model.Categories)
         {
-            <div class="border border-dark col">
-                @category.Name
+            <div class="col-3">
+                <div class="card">
+                    <img class="card-img-top" src="@category.Image.GetPath()" alt="@category.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@category.Name</h5>
+                        <p class="card-text">@category.Description</p>
+                        <a href="#" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
             </div>
         }
     </div>
 </div>
-<div class="border border-dark container-fluid">
-    <div class="row">
+
+<div class="container pb-4">
+    <div class="row justify-content-center pb-2">
+        <div class="col-8 text-center">
+            <h2>Наши врачи</h2>
+            <p>Все наши врачи квалифицированные специалисты, которые прошли обучение по самым высоким медицинским стандартам</p>
+        </div>
+    </div>
+    <div class="row justify-content-center gy-3">
+        @for (int i = 0; i < 3; i++)
         @foreach (var specialist in Model.Specialists)
         {
-            <div class="border border-dark col">
-                @specialist.GetFIO()
+            <div class="col-3">
+                <div class="card">
+                    <img class="card-img-top" src="@specialist.Image.GetPath()" alt="@specialist.GetFIO()">
+                    <div class="card-body">
+                        <h5 class="card-title">@specialist.GetFIO()</h5>
+                        <p class="card-text">@specialist.Description</p>
+                        <a href="#" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
             </div>
         }
     </div>
 </div>
-<div class="border border-dark container-fluid">
+
+<div class="border border-dark container">
     <div class="row">
         @foreach (var review in Model.Reviews)
         {

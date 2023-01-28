@@ -20,7 +20,7 @@
   <ItemGroup>
     <Folder Include="Views\Admin\Shared\" />
     <Folder Include="wwwroot\Images\Uploads\" />
-    <Folder Include="wwwroot\Images\static\" />
+    <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 
 </Project>
