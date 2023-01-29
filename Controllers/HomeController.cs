@@ -25,7 +25,7 @@ namespace ShopOfServices.Controllers
             {
                 Categories = _siteDbContext.Categories.Include(x => x.Image).ToArray(),
                 Specialists = _siteDbContext.Specialists.Include(x => x.Image).ToArray(),
-                Reviews = _siteDbContext.Reviews.Where(x => x.IsPublished).ToArray()
+                Reviews = _siteDbContext.Reviews.Where(x => x.IsPublished).Include(x => x.Service).Take(9).ToArray()
             };
 
             return View(mainPageModel);

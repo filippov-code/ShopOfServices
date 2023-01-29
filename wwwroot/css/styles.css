@@ -12,10 +12,6 @@ h1, h2, h3, h4, h5, h6{
     height: 150px;
 }
 
-.h-nav{
-    
-}
-
 .h-nav div{
     display:flex;
     align-items: center;
@@ -35,5 +31,141 @@ h1, h2, h3, h4, h5, h6{
         text-decoration: none;
         opacity: 1 !important;
     }
+
+    /* service card */
+    .service-card {
+        width: 100%;
+        border-radius: 5px;
+    }
+
+    .service-card-img{
+        height: 275px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 5px 5px 0 0;
+    }
+
+.service-card-body {
+    text-align: center;
+    padding: 1em;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.service-card-title {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    line-height: 1.3em;
+    height: 1.3em;
+}
+
+.service-card-text {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-height: 1.3em;
+    height: 3.9em;
+}
+
+/*specialist card*/
+.specialist-card {
+    width: 100%;
+}
+
+.specialist-card-img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.specialist-card-body {
+    text-align: center;
+    padding: 1em;
+}
+
+.specialist-card-fio {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.3em;
+    height: 2.6em;
+    margin-bottom: 0.5rem !important;
+}
+
+.specialist-card-post {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    line-height: 1.3em;
+    height: 1.3em;
+    text-transform: uppercase;
+    color: #b3b3b3;
+    margin-bottom: 0.5rem !important;
+}
+
+.specialist-card-text {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-height: 1.3em;
+    height: 3.9em;
+    margin-bottom: 0 !important;
+}
+
+/* review card */
+.review-card {
+    padding: 1rem;
+    border-radius: 15px;
+}
+
+.review-card-fio {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.review-card-service {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    line-height: 1.3em;
+    height: 1.3em;
+    margin-bottom: 0.5em;
+}
+
+.review-card-message {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    line-height: 1.3em;
+    height: 6.5em;
+    margin-bottom: 0;
+}
+
+/* footer */
+.footer-info{
+    padding: 4em 6em;
+}
+
+.footer-header{
+    color: white;
+    margin-bottom: 1em;
+}
+
+.footer-text{
+    color: rgba(255, 255, 255, 0.8);
+}
 
 
