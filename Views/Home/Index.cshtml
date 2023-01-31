@@ -1,10 +1,11 @@
-﻿@model ShopOfServices.ViewModels.Home.MainPageViewModel
+﻿@*@model ShopOfServices.ViewModels.Home.MainPageViewModel*@
+@model (Category[] categories, Specialist[] specialists, Review[] reviews)
 @{
     Layout = "_Layout";
     bool firstReview = true;
 }
 
-<section class="p-4 pt-0">
+<section class="p-4">
     <div class="container">
         <div class="row justify-content-center mb-4">
             <div class="col-8 text-center">
@@ -14,7 +15,7 @@
         </div>
         <div class="row justify-content-center gy-4">
             @for (int i = 0; i < 3; i++)
-            @foreach (var category in Model.Categories)
+            @foreach (var category in Model.categories)
             {
                 <div class="col-sm-6 col-md-4 col-lg-3">
                     <div class="service-card">
@@ -41,7 +42,7 @@
         </div>
         <div class="row justify-content-center gy-3 gx-5">
             @for (int i = 0; i < 3; i++)
-            @foreach (var specialist in Model.Specialists)
+            @foreach (var specialist in Model.specialists)
             {
                     <div class="col-6 col-md-4 col-lg-3">
                     <div class="specialist-card">
@@ -67,20 +68,20 @@
             </div>
         </div>
     </div>
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div id="carouselLittleReviews" class="carousel slide pb-4" data-bs-ride="carousel">
         <div class="carousel-inner">
-            @for(int i = 0; i < Model.Reviews.Length; i+=3)
+            @for(int i = 0; i < Model.reviews.Length; i+=3)
             {
                 <div class="carousel-item @(firstReview ? "active" : "")">
                     <div class="container">
                         <div class="row gy-3 justify-content-center">
-                            @for (int j = i; j < i + 3 && j < Model.Reviews.Length; j++)
+                            @for (int j = i; j < i + 3 && j < Model.reviews.Length; j++)
                             {
                                 <div class="col-md-4">
                                     <div class="review-card bg-light">
-                                        <h3 class="review-card-fio">@Model.Reviews[j].SenderName</h3>
-                                        <span class="review-card-service">@Model.Reviews[j].Service.Name</span>
-                                        <p class="review-card-message">@Model.Reviews[j].Message</p>
+                                        <h3 class="review-card-fio">@Model.reviews[j].SenderName</h3>
+                                        <span class="review-card-service">@Model.reviews[j].Service.Name</span>
+                                        <p class="review-card-message">@Model.reviews[j].Message</p>
                                     </div>
                                 </div>
                             }
@@ -91,11 +92,11 @@
                 firstReview = false;
             }
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselLittleReviews" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Предыдущий</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselLittleReviews" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Следующий</span>
         </button>

@@ -23,28 +23,34 @@
                     <div class="col-md-4 order-md-first h-header d-flex justify-content-center justify-content-md-end align-items-center">
                         
                         <div class="h-25 order-md-last align-content-center">
-                            <img src="~/Images/static/location-icon.png" class="h-100 me-3 me-md-0 ms-md-3" />
+                        <img src="~/Images/static/3.png" class="h-100 me-3 me-md-0 ms-md-3" />
                         </div>
                         <div class="text-md-end">
-                            <p class="m-0">TEXT TEXT TEXT TEXT</p>
-                            <p class="m-0">text text text text</p>
+                            <p class="m-0 fw-bold">
+                                <span class="text-info">Телефон</span> <span class="text-black opacity-100">+7 937 522 08 08</span>
+                            </p>
+                            <p class="m-0">ТЦ Палитра, Проспект Мира, 49a</p>
                         </div>
                     </div>
 
                     <div class="col-md-4 order-md-last h-header d-flex justify-content-center justify-content-md-start align-items-center">
                         <div class="h-25 align-content-center">
-                            <img src="~/Images/static/hour-icon.png" class="h-100 me-3" />
+                        <img src="~/Images/static/clock-icon.png" class="h-100 me-3" />
                         </div>
                         <div>
-                            <p class="m-0">TEXT TEXT TEXT TEXT</p>
-                            <p class="m-0">text text text text</p>
+                            <p class="m-0">
+                                <span class="text-black fw-bold opacity-100">Рабочие часы</span>
+                            </p>
+                            <p class="m-0">
+                                Пн-Пт: <span class="text-info opacity-100 fw-bold">8:00-18:00</span> Сб-Вс: Закрыто
+                            </p>
                         </div>
                     </div>
 
                 </div>
             </div>
 
-                <nav class="row h-nav justify-content-center">
+                <nav class="row h-nav justify-content-center border-bottom">
                     <div class="col-auto">
                         <a asp-controller="Home" asp-action="@nameof(HomeController.Index)">Главная</a>
                     </div>
@@ -58,7 +64,7 @@
                         <a asp-controller="Home" asp-action="@nameof(HomeController.Specialists)">Специалисты</a>
                     </div>
                     <div class="col-auto">
-                        <a asp-controller="Home" asp-action="@nameof(HomeController.Prices)">Прайс</a>
+                        <a asp-controller="Home" asp-action="@nameof(HomeController.Prices)">Цены</a>
                     </div>
                     <div class="col-auto">
                         <a asp-controller="Home" asp-action="@nameof(HomeController.Reviews)">Отзывы</a>
@@ -82,9 +88,13 @@
                     </div>
                     <div class="col-md-4">
                         <h3 class="footer-header">Остались вопросы?</h3>
-                        <p class="footer-text">091277, Ульяновская область, город Коломна, бульвар Будапештсткая, 13</p>
+                        <p class="footer-text">423809,Республика Татарстан, Набережные Челны, ТЦ Палитра, Проспект Мира, 49a, 14 кабинет, 5 этаж</p>
+                        <p class="footer-text">
+                            +7 937 522 08 08<br />
+                            +7 905 370 11 23<br />
+                            +7 937 586 03 28
+                        </p>
                         <p class="footer-text">123456789@mail.ru</p>
-                        <p class="footer-text">+1234567890</p>
                     </div>
                     <div class="col-md-4">
                         <h3 class="footer-header">Рабочие часы</h3>

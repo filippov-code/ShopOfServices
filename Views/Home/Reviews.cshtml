@@ -1,15 +1,50 @@
-﻿@model ICollection<Review>
+﻿@model Review[]
 @{
     Layout = "_Layout";
+
+    bool firstReview = true;
 }
-<div class="container">
-    @foreach (var comment in Model)
-    {
-        <div class="row border border-dark">
-            <div class="col">
-                <h3>@comment.SenderName</h3>
-                <h3>@comment.Message</h3>
+
+<section class="p-4">
+    <div class="container">
+        <div class="row justify-content-center mb-4">
+            <div class="col-8 text-center">
+                <h2>Отзывы клиентов</h2>
+                <p>Посмотрите что наши клиенты говорят о нас</p>
             </div>
         </div>
-    }
-</div>
+    </div>
+    <div id="carouselManyReviews" class="carousel slide pb-4" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @for (int i = 0; i < Model.Length; i += 9)
+            {
+                <div class="carousel-item @(firstReview ? "active" : "")">
+                    <div class="container">
+                        <div class="row gy-3 justify-content-center">
+                            @for (int j = i; j < i + 9 && j < Model.Length; j++)
+                            {
+                                <div class="col-md-4">
+                                    <div class="review-card bg-light">
+                                        <h3 class="review-card-fio">@Model[j].SenderName</h3>
+                                        <span class="review-card-service">@Model[j].Service.Name</span>
+                                        <p class="review-card-message">@Model[j].Message</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                firstReview = false;
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselManyReviews" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Предыдущий</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselManyReviews" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Следующий</span>
+        </button>
+    </div>
+</section>

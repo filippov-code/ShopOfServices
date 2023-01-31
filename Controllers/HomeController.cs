@@ -21,14 +21,20 @@ namespace ShopOfServices.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var mainPageModel = new MainPageViewModel
-            {
-                Categories = _siteDbContext.Categories.Include(x => x.Image).ToArray(),
-                Specialists = _siteDbContext.Specialists.Include(x => x.Image).ToArray(),
-                Reviews = _siteDbContext.Reviews.Where(x => x.IsPublished).Include(x => x.Service).Take(9).ToArray()
-            };
+            //    var mainPageModel = new MainPageViewModel
+            //    {
+            //        Categories = _siteDbContext.Categories.Include(x => x.Image).ToArray(),
+            //        Specialists = _siteDbContext.Specialists.Include(x => x.Image).ToArray(),
+            //        Reviews = _siteDbContext.Reviews.Where(x => x.IsPublished).Include(x => x.Service).Take(9).ToArray()
+            //    };
 
-            return View(mainPageModel);
+            return View(
+                (
+                _siteDbContext.Categories.Include(x => x.Image).ToArray(),
+                _siteDbContext.Specialists.Include(x => x.Image).ToArray(),
+                _siteDbContext.Reviews.Where(x => x.IsPublished).Include(x => x.Service).Take(9).ToArray()
+                )
+            ); ;
         }
 
         public async Task<IActionResult> About()
@@ -51,7 +57,7 @@ namespace ShopOfServices.Controllers
 
         public IActionResult Specialists()
         {
-            var specialists = _siteDbContext.Specialists.Include(x => x.Image).ToList();
+            var specialists = _siteDbContext.Specialists.Include(x => x.Image).ToArray();
             return View(specialists);
         }
 
@@ -63,14 +69,20 @@ namespace ShopOfServices.Controllers
 
         public async Task<IActionResult> Prices()
         {
-            Page page = await _siteDbContext.Pages.Where(x => x.Name == PageNames.Price).SingleOrDefaultAsync();
+            Page page = await _siteDbContext.Pages
+                .Where(x => x.Name == PageNames.Price)
+                .SingleOrDefaultAsync();
 
             return View(model: page.Html);
         }
 
-        public IActionResult Reviews()
+        public async Task<IActionResult> Reviews()
         {
-            var reviews = _siteDbContext.Reviews.Where(x => x.IsPublished).ToList();
+            var reviews = _siteDbContext.Reviews
+                .Where(x => x.IsPublished)
+                .Include(x => x.Service).Take(18)
+                .ToArray();
+
             return View(reviews);
         }
 

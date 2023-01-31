@@ -1,6 +1,31 @@
-﻿@model string
-@{
+﻿@{
     Layout = "_Layout";
 }
 
-@Html.Raw(Model)
+<section class="p-4">
+    <div class="container">
+        <div class="row justify-content-center mb-4">
+            <div class="col-8 text-center">
+                <h2>Контактная информация</h2>
+                @*<p>Все наши врачи квалифицированные специалисты, которые прошли обучение по самым высоким медицинским стандартам</p>*@
+            </div>
+        </div>
+        <div class="row justify-content-center gy-3 gx-5">
+            <div class="col-6">
+                <h4>Адрес</h4>
+                <p>423809,Республика Татарстан, Набережные Челны, ТЦ Палитра, Проспект Мира, 49a, 14 кабинет, 5 этаж</p>
+                <h4>Телефон</h4>
+                <p>
+                    +7 937 522 08 08<br />
+                    +7 905 370 11 23<br />
+                    +7 937 586 03 28
+                </p>
+                <h4>Электронная почта</h4>
+                <p>12345@mail.ru</p>
+            </div>
+            <div class="col-6 p-0 m-0 border">
+                <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ae71bf2a8ef4a9d5bba1d2baf6a425439b668868f31ea6e8ee56328dee8716514&amp;width=100%25&amp;height=450&amp;lang=ru_RU&amp;scroll=true"></script>
+            </div>
+        </div>
+    </div>
+</section>
