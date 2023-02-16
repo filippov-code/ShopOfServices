@@ -46,13 +46,17 @@ namespace ShopOfServices.Controllers
 
         public IActionResult Services()
         {
-            var categories = _siteDbContext.Categories.Include(x => x.Services).ToArray();
+            var categories = _siteDbContext.Categories.Include(x => x.Image).ToArray();
             return View(categories);
         }
 
         public async Task<IActionResult> Service(Guid id)
         {
-            return null;
+            var category = await _siteDbContext.Categories
+                .Include(x => x.Services)
+                .Include(x => x.Image)
+                .SingleAsync(x => x.Id == id);
+            return View(category);
         }
 
         public IActionResult Specialists()
@@ -61,19 +65,11 @@ namespace ShopOfServices.Controllers
             return View(specialists);
         }
 
-        public IActionResult Specialist(Guid id)
-        {
-            Specialist specialist = _siteDbContext.Specialists.Include(x => x.Image).SingleOrDefault(x => x.Id == id);
-            return View(specialist);
-        }
 
         public async Task<IActionResult> Prices()
         {
-            Page page = await _siteDbContext.Pages
-                .Where(x => x.Name == PageNames.Price)
-                .SingleOrDefaultAsync();
-
-            return View(model: page.Html);
+            var categories = await _siteDbContext.Categories.Include(x => x.Services).ToArrayAsync();
+            return View(categories);
         }
 
         public async Task<IActionResult> Reviews()

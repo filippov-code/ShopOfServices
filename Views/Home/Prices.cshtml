@@ -1,6 +1,53 @@
-﻿@model string
+﻿@model Category[]
 @{
     Layout = "_Layout";
 }
 
-@Html.Raw(Model)
+<section class="p-4">
+    <div class="container">
+        <div class="row justify-content-center mb-4">
+            <div class="col-8 text-center">
+                <h2>Цены</h2>
+                @*<p>Все наши врачи квалифицированные специалисты, которые прошли обучение по самым высоким медицинским стандартам</p>*@
+            </div>
+        </div>
+        <div class="row justify-content-center gy-3 gx-5">
+            <table class="table">
+                <thead>
+                    <tr class="table-bordered">
+                        <th scope="col"></th>
+                        <th scope="col">Услуга</th>
+                        <th scope="col">Цена</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var category in Model)
+                    {
+                        <tr class="table-light table-group-divider">
+                            <th scope="row"></th>
+                            <td>@category.Name</td>
+                            <td></td>
+                        </tr>
+                        @foreach(var service in category.Services)
+                        {
+                            <tr>
+                                <th></th>
+                                <td>@service.Name</td>
+                                @if (service.Price > 0)
+                                {
+                                    <td>от @service.Price руб.</td>
+                                }
+                                else
+                                {
+                                    <td>Бесплатно</td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    
+</section>

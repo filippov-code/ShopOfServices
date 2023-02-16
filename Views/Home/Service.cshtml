@@ -1,48 +1,49 @@
-﻿@model ShopOfServices.ViewModels.Home.ServiceViewModel
+﻿@model Category
 @{
     Layout = "_Layout";
 }
-@{
 
-    List<Review> publishedComments = new();
-    if (Model.Comments != null)
-    {
-        publishedComments = Model.Comments.Where(x => x.IsPublished).ToList();
-    }
-}
-
-<h2>Услуга</h2>
-<div>
-    <img src="@Model.ImagePath" height="400" width="300" />
-</div>
-<h3>@Model.Title</h3>
-<h4>@Model.FullDescription</h4>
-<h4>Специалисты</h4>
-@foreach (var specialist in Model.Specialists)
-{
-    <div class="boreder border-dark">
-        <h4>@specialist.GetFIO()</h4>
-    </div>
-}
-<h4>Отзывы</h4>
-@if (publishedComments.Count > 0)
-{
-    foreach (var comment in publishedComments)
-    {
-        <div class="border border-dark">
-            <h5>@comment.SenderName</h5>
-            <h5>@comment.Message</h5>
+<section class="p-4">
+    <div class="container">
+        <div class="row justify-content-center mb-4">
+            <div class="col-8 text-center">
+                <h2>@Model.Name</h2>
+            </div>
         </div>
-    }
-}
-else
-{
-    <div class="border border-dark align-content-center">
-        <h4>Отзывов пока нет</h4>
+        <div class="row justify-content-center gx-5">
+            <div class="col-12 col-lg-4">
+                <img src="@Model.Image.GetPath()" class="m-3 mt-0 rounded-2 w-100" align="left" />
+            </div>
+            <div class="col-12 col-lg-8">
+                <p>@Model.Description</p>
+                <h5>Услуги</h5>
+                <table class="table">
+                    <thead>
+                        <tr class="table-bordered">
+                            <th scope="col">Услуга</th>
+                            <th scope="col">Цена</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var service in Model.Services)
+                        {
+                            <tr>
+                                <td>@service.Name</td>
+                                @if (service.Price > 0)
+                                {
+                                    <td>от @service.Price руб.</td>
+                                }
+                                else
+                                {
+                                    <td>Бесплатно</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-}
-<div class="border border-dark">
-    <a asp-controller="Home" asp-action="AddComment" asp-route-id="@Model.Id">Оставить отзыв</a>
-</div>
+</section>
 
 

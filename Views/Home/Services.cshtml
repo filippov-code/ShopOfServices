@@ -3,17 +3,31 @@
     Layout = "_Layout";
 }
 
-@foreach (var category in Model)
-{
-    <div class="border border-dark">
-        @category.Name
-    </div>
-    foreach (var service in category.Services)
-    {
-        <div class="border border-light">
-            @service.Name
+<section class="p-4">
+    <div class="container">
+        <div class="row justify-content-center mb-4">
+            <div class="col-8 text-center">
+                <h2>Наши услуги</h2>
+                <p>Все услуги проводятся на высокоточном оборудовании с использованием самых современных технологий</p>
+            </div>
         </div>
-    }
-}
+        <div class="row justify-content-center gy-4">
+            @for (int i = 0; i < 3; i++)
+                @foreach (var category in Model)
+                {
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <div class="service-card">
+                            <img class="service-card-img" src="@category.Image.GetPath()" alt="@category.Name">
+                            <div class="service-card-body">
+                                <h5 class="service-card-title">@category.Name</h5>
+                                <p class="service-card-text">@category.Description</p>
+                                <a asp-controller="Home" asp-action="@nameof(HomeController.Service)" asp-route-id="@category.Id" class="btn btn-primary">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+        </div>
+    </div>
+</section>
 
 

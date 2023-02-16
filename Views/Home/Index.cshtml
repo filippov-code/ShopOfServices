@@ -23,7 +23,7 @@
                         <div class="service-card-body">
                             <h5 class="service-card-title">@category.Name</h5>
                             <p class="service-card-text">@category.Description</p>
-                            <a href="#" class="btn btn-primary">Подробнее</a>
+                            <a asp-controller="Home" asp-action="@nameof(HomeController.Service)" asp-route-id="@category.Id" class="btn btn-primary">Подробнее</a>
                         </div>
                     </div>
                 </div>

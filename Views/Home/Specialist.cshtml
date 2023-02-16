@@ -1,9 +1,0 @@
-﻿@model Specialist
-@{
-    Layout = "_Layout";
-}
-
-<h2>Специалист: @Model.GetFIO()</h2>
-<img src="@Model.Image.GetPath()" width="200" height="300" />
-<h3>Должность: @Model.Post</h3>
-<h3>Описание: @Model.Description</h3>
