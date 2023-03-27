@@ -7,41 +7,60 @@
     List<Review> notPublishedComments = Model.Where(x => !x.IsPublished).ToList();
 }
 
-<h2>Управление отзывами</h2>
+<section class="px-2 mb-1 w-100 text-center">
+    <h2>Отзывы</h2>
+</section>
+
+<section class="px-4 mb-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <div class=" bg-success p-2 rounded-top">
+                    <h4 class="m-0 text-white">Опубликованные</h4>
+                </div>
+                @foreach (var comment in piblishedComments)
+                {
+                    <div class="border border-success border-2 border-top-0 p-2">
+                        <div class="mb-1">
+                            <span class="h5">@comment.SenderName </span>
+                            <span class="text-secondary">@comment.SenderEmail<br /></span>
+                            <span class="text-black-50">@comment.Service.Name </span>
+                            <span class="text-black-50">@comment.CreateAt.ToString()</span>
+                        </div>
+                        <div class="mb-1">@comment.Message</div>
+                        <div>
+                            <a class="text-danger" asp-controller="Admin" asp-action="DeleteReview" asp-route-id="@comment.Id">Удалить</a>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-6">
+                <div class="border border-2 p-2 rounded-top">
+                    <h4 class="m-0">Не опубликованные</h4>
+                </div>
+                @foreach (var comment in notPublishedComments)
+                {
+                    <div class="border border-2 border-top-0 p-2">
+                        <div class="mb-1">
+                            <span class="h5">@comment.SenderName </span>
+                            <span class="text-secondary">@comment.SenderEmail<br /></span>
+                            <span class="text-black-50">@comment.Service.Name </span>
+                            <span class="text-black-50">@comment.CreateAt.ToString()</span>
+                        </div>
+                        <div class="mb-1">@comment.Message</div>
+                        <div>
+                            <a class="text-success" asp-controller="Admin" asp-action="PostReview" asp-route-id="@comment.Id">Опубликовать</a>
+                            <a class="text-danger" asp-controller="Admin" asp-action="DeleteReview" asp-route-id="@comment.Id">Удалить</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
 <div class="container-fluid">
     <div class="row">
-        <div class="col-6">
-            <div class="border border-dark">
-                <h3>Опубликованные</h3>
-            </div>
-            @foreach (var comment in piblishedComments)
-            {
-                <div class="border border-dark">
-                    <div>@comment.SenderName</div>
-                    @*<div>На @comment.Service.Title</div>*@
-                    <div>@comment.Message</div>
-                    <div>
-                        <a asp-controller="Admin" asp-action="DeleteReview" asp-route-id="@comment.Id">Удалить</a>
-                    </div>
-                </div>
-            }
-        </div>
-        <div class="col-6">
-            <div class="border border-dark">
-                <h3>Не опубликованные</h3>
-            </div>
-            @foreach (var comment in notPublishedComments)
-            {
-                <div class="border border-dark">
-                    <div>@comment.SenderName</div>
-                    @*<div>На @comment.Service.Title</div>*@
-                    <div>@comment.Message</div>
-                    <div>
-                        <a asp-controller="Admin" asp-action="PostReview" asp-route-id="@comment.Id">Опубликовать</a>
-                        <a asp-controller="Admin" asp-action="DeleteReview" asp-route-id="@comment.Id">Удалить</a>
-                    </div>
-                </div>
-            }
-        </div>
+        
     </div>
 </div>

@@ -19,7 +19,7 @@ namespace ShopOfServices.Data
 
         public SiteDbContext(DbContextOptions<SiteDbContext> options) : base(options)
         {
-
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

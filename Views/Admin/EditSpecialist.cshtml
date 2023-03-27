@@ -3,36 +3,46 @@
     Layout = "_AdminLayout";
 }
 
-<h1>Добавить услугу</h1>
-<form asp-controller="Admin" asp-action="EditSpecialist" enctype="multipart/form-data" method="post">
-    <div asp-validation-summary="All"></div>
-    <input asp-for="Id" type="hidden" />
-    <div>
-        <label>Имя</label>
-        <input asp-for="FirstName" type="text" />
+
+
+<section class="px-2 mb-1 w-100 text-center">
+    <h3>Редактирование специалиста</h3>
+</section>
+
+<section class="px-4">
+    <div class="container">
+        <form asp-controller="Admin" asp-action="EditSpecialist" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="All"></div>
+            <input asp-for="Id" type="hidden" />
+            <div class="mb-3">
+                <label class="form-label">Имя</label>
+                <input class="form-control" asp-for="FirstName" type="text" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Фамилия</label>
+                <input class="form-control" asp-for="LastName" type="text" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Отчество</label>
+                <input class="form-control" asp-for="MiddleName" type="text" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Изображение</label>
+                <p><img src="@Model?.OldImagePath" height="250"/></p>
+                <input class="form-control" asp-for="NewImageFile" type="file" accept="image/jpeg, image/png" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Должность</label>
+                <input class="form-control" asp-for="Post" type="text" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Описание</label>
+                <textarea class="form-control" rows="3" asp-for="Description" ></textarea>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-success" type="submit" value="Сохранить" />
+            </div>
+        </form>
     </div>
-    <div>
-        <label>Отчество</label>
-        <input asp-for="MiddleName" type="text" />
-    </div>
-    <div>
-        <label>Фамилия</label>
-        <input asp-for="LastName" type="text" />
-    </div>
-    <div>
-        <label>Изображение</label>
-        <img src="@Model?.OldImagePath" height="300" width="200" />
-        <input asp-for="NewImageFile" type="file" accept="image/jpeg, image/png" />
-    </div>
-    <div>
-        <label>Должность</label>
-        <input asp-for="Post" type="text" />
-    </div>
-    <div>
-        <label>Описание</label>
-        <input asp-for="Description" />
-    </div>
-    <div>
-        <input type="submit" value="Сохранить" />
-    </div>
-</form>
+</section>
+

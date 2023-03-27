@@ -4,24 +4,53 @@
     Layout = "_AdminLayout";
 }
 
-<h1>Цены</h1>
-<form asp-controller="Admin" asp-action="EditPrices" method="post">
-    @for (int i = 0; i < Model.Length; i++)
-    {
-        <div class="border border-dark">
-            @Model[i].Name
-            <input asp-for="@Model[i].Name" type="hidden" />
-        </div>
-        for (int j = 0; j < Model[i].Services.Length; j++)
-        {
-            <div class="border border-light">
-                <label>@Model[i].Services[j].Name</label>
-                <input asp-for="@Model[i].Services[j].Price" type="text" />
-                <input asp-for="@Model[i].Services[j].Id" type="hidden" />
-            </div>
-        }
-    }
+<section class="px-2 mb-1 w-100 text-center">
+    <h2>Цены</h2>
+</section>
 
+<section class="px-4 mb-4">
+    <div class="container">
+        <form asp-controller="Admin" asp-action="EditPrices" method="post">
+            <table class="table">
+                <thead>
+                    <tr class="table-bordered">
+                        <th scope="col"></th>
+                        <th scope="col">Услуга</th>
+                        <th scope="col">Цена</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Length; i++)
+                    {
+                        <tr class="table-light table-group-divider">
+                            <th scope="row"></th>
+                            <td>@Model[i].Name</td>
+                            <td></td>
+                            <input asp-for="@Model[i].Name" type="hidden" />
+                        </tr>
+                        for (int j = 0; j < Model[i].Services.Length; j++)
+                        {
+                            <tr class="border border-light">
+                                <th></th>
+                                <td><label>@Model[i].Services[j].Name</label></td>
+                                <td>
+                                    <div class="row">
+                                        <label class="col-1 col-form-label text-end p-0 text-center">от </label>
+                                        <div class="col-10 p-0">
+                                            <input class="form-control" asp-for="@Model[i].Services[j].Price" type="number" />
+                                        </div>
+                                        <label class="col-1 col-form-label text-start p-0 text-center"> руб.</label>
+                                    </div>
+                                    
+                                </td>
+                                <input asp-for="@Model[i].Services[j].Id" type="hidden" />
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <input class="btn btn-success" type="submit" value="Сохранить" />
+        </form>
+    </div>
+</section>
 
-    <input type="submit" value="Сохранить"/>
-</form>

@@ -5,40 +5,50 @@
 
 <script src="~/js/editcategory.js"></script>
 
-<h1>Редактировать категорию</h1>
-<form asp-controller="Admin" asp-action="EditCategory" enctype="multipart/form-data" method="post">
-    <div asp-validation-summary="All"></div>
-    <input asp-for="Id" type="hidden" />
-    <div>
-        <label>Название</label>
-        <input asp-for="Name" type="text" />
-    </div>
-    <div>
-        <label>Изображение</label>
-        <img src="@Model?.OldImagePath" height="300" width="200" />
-        <input asp-for="NewImageFile" type="file" accept="image/jpeg, image/png" />
-    </div>
-    <div>
-        <label>Короткое описание</label>
-        <input asp-for="Description" type="text" />
-    </div>
-    <div id="oldServicesInputFieldsContainer" class="container-fluid">
-        @if (Model.Services != null)
-            @for (int i = 0; i < Model.Services.Length; i++)
-            {
+<section class="px-2 mb-1 w-100 text-center">
+        <h3>Редактировать категорию</h3>
+</section>
+
+<section class="px-4">
+    <div class="container">
+        <form asp-controller="Admin" asp-action="EditCategory" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="All"></div>
+            <input asp-for="Id" type="hidden" />
+            <div class="mb-3">
+                <label class="form-label">Название</label>
+                <input class="form-control" asp-for="Name" type="text" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Изображение</label>
+                <p><img src="@Model?.OldImagePath" height="250"/></p>
+                <input class="form-control" asp-for="NewImageFile" type="file" accept="image/jpeg, image/png" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Короткое описание</label>
+                <textarea class="form-control" asp-for="Description" type="text" rows="3"></textarea>
+            </div>
+            <div>
+                <label class="form-label">Услуги</label>
+            </div>
+            <div id="oldServicesInputFieldsContainer">
+                @if (Model.Services != null)
+                    @for (int i = 0; i < Model.Services.Length; i++)
+                    {
+                        <div class="mb-1">
+                            <input asp-for="@Model.Services[@i].Id" type="hidden"/>
+                            <input class="form-control" asp-for="@Model.Services[@i].Name" type="text"/>
+                        </div>
+                    }
+            </div>
+            <div id="servicesInputFieldContainer" class="mb-1">
                 <div>
-                    <input asp-for="@Model.Services[@i].Id" type="hidden"/>
-                    <input asp-for="@Model.Services[@i].Name" type="text"/>
+                    <input class="form-control mb-1" placeholder="Новая услуга" name="Services[@(Model.Services != null ? Model.Services.Length : 0)].Name" type="text" />
                 </div>
-            }
+            </div>
+            <div class="mb-1">
+                <button class="btn btn-outline-secondary" onclick="addServiceInput()" type="button">Добавить услугу</button>
+            </div>
+            <input class="btn btn-success mb-4" type="submit" value="Сохранить" />
+        </form>
     </div>
-    <div id="servicesInputFieldContainer" class="container-fluid">
-        <div>
-            <input name="Services[@(Model.Services != null ? Model.Services.Length : 0)].Name" type="text" />
-        </div>
-    </div>
-    <div>
-        <button onclick="addServiceInput()" type="button">+</button>
-    </div>
-    <input type="submit" value="Сохранить" />
-</form>
+</section>

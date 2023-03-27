@@ -3,17 +3,26 @@
     Layout = "_Layout";
 }
 
-<form asp-controller="Admin" asp-action="Login" method="post">
-    <div asp-validation-summary="All"></div>
-    <div>
-        <label>Email</label>
-        <input type="email" asp-for="Email" />
+<section class="mb-4">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <form asp-controller="Admin" asp-action="Login" method="post">
+                    <div asp-validation-summary="All"></div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input class="form-control" type="email" asp-for="Email" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Пароль</label>
+                        <input class="form-control" type="text" asp-for="Password" />
+                    </div>
+                    <div>
+                        <input class="btn btn-primary" type="submit"/>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div>
-        <label>Password</label>
-        <input type="text" asp-for="Password" />
-    </div>
-    <div>
-        <input type="submit" />
-    </div>
-</form>
+</section>
+

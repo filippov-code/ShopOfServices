@@ -3,27 +3,28 @@
     <head>
         <link rel="stylesheet" href="~/css/bootstrap.min.css" />
         <link rel="stylesheet" href="~/css/styles.css" />
-        
+
+        <link rel="icon" href="~/Images/static/favicon.ico" type="image/x-icon">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </head>
-    <body>
+    <body style='overflow-x:hidden;'>
         <header>
             <div class="container-fluid">
                 <div class="row border-bottom">
                     <div class="col-md-4 h-header">
-                        <div class="h-100 d-flex justify-content-center">
-                            <img src="~/Images/static/logo.png" class="h-100" />
+                        <div class="h-100 d-flex justify-content-center p-3">
+                            <img src="~/Images/static/logo.svg" class="h-100" />
                         </div>
                     </div>
                     
                     <div class="col-md-4 order-md-first h-header d-flex justify-content-center justify-content-md-end align-items-center">
                         
                         <div class="h-25 order-md-last align-content-center">
-                        <img src="~/Images/static/3.png" class="h-100 me-3 me-md-0 ms-md-3" />
+                        <img src="~/Images/static/location-icon.png" class="h-100 me-3 me-md-0 ms-md-3" />
                         </div>
                         <div class="text-md-end">
                             <p class="m-0 fw-bold">
@@ -78,31 +79,31 @@
         @RenderBody()
 
         <footer class="bg-info">
-            <div class="contaner">
-                <div class="row gx-5 footer-info">
+            <div class="contaner-fluid">
+                <div class="row gx-4 footer-info">
                     <div class="col-md-4">
                         <h3 class="footer-header">Fast-Help</h3>
                         <p class="footer-text">
-                            Имеется спорная точка зрения, гласящая примерно следующее: реплицированные с зарубежных источников, современные исследования призваны к ответу. Как принято считать, сделанные на базе интернет-аналитики выводы рассмотрены исключительно в разрезе маркетинговых и финансовых предпосылок. С другой стороны, базовый вектор развития требует анализа стандартных подходов.
+                            Занимаемся стоматологическим лечением всех видов и любой трудности, но без лишней боли. С чутким подходом устанавливаем первопричину патологий и излечиваем болезнь. В распоряжении наших специалистов все современные методики лечения и профилактики.
                         </p>
                     </div>
                     <div class="col-md-4">
                         <h3 class="footer-header">Остались вопросы?</h3>
                         <p class="footer-text">423809,Республика Татарстан, Набережные Челны, ТЦ Палитра, Проспект Мира, 49a, 14 кабинет, 5 этаж</p>
-                        <p class="footer-text">
+                        <p class="footer-text fw-semibold text-white">
                             +7 937 522 08 08<br />
                             +7 905 370 11 23<br />
                             +7 937 586 03 28
                         </p>
-                        <p class="footer-text">123456789@mail.ru</p>
+                        <p class="footer-text">fasthelp.zaharoff@yandex.ru</p>
                     </div>
                     <div class="col-md-4">
                         <h3 class="footer-header">Рабочие часы</h3>
-                        <p class="footer-text">с 8 до 8</p>
+                    <p class="footer-text">Пн-Пт: <span class="fw-semibold text-white">8:00-18:00</span> Сб-Вс: Закрыто</p>
                     </div>
                 </div>
                 <div class="row text-center">
-                    <span class="footer-text p-1">Copyright ©2023 Все права защищены | Разработка сайта github.com/filippov-code</span>
+                    <span class="footer-text p-1">Copyright © @DateTime.Now.Year Все права защищены | Разработка сайта cooes.ef@gmail.com</span>
                 </div>
             </div>
         </footer>

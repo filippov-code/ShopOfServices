@@ -2,37 +2,41 @@
 <html>
     <head>
         <link rel="stylesheet" href="~/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="~/css/styles.css" />
     </head>
     <body>
-        <header>
+        <header class="mb-2">
             <div class="container-fluid">
-                <div class="row justify-content-center">
+                <div class="row">
                     <div class="col">
-                        <h3>Админ панель</h3>
+                        <h1>Fast-Help Управление</h1>
                     </div>
                 </div>
-                <div class="row justify-content-center">
-                    <div class="col border border-dark">
-                        <a asp-controller="Admin" asp-action="CategoriesAndServices">Категории и Услуги</a>
-                    </div>
-                    <div class="col border border-dark">
-                        <a asp-controller="Admin" asp-action="Specialists">Специалисты</a>
-                    </div>
-                    <div class="col border border-dark">
-                        <a asp-controller="Admin" asp-action="Reviews">Отзывы</a>
-                    </div>
-                    <div class="col border border-dark">
-                        <a asp-controller="Admin" asp-action="EditPrices">Цены</a>
-                    </div>
-                    <div class="col border border-dark">
+                <div class="row">
+                    <a class="col admin-nav-btn-bg-main rounded-2 py-3 px-2 text-decoration-none text-white mx-1" asp-controller="Admin" asp-action="CategoriesAndServices">
+                        Категории и Услуги
+                    </a>
+                    <a class="col admin-nav-btn-bg-main rounded-2 py-3 px-2 text-decoration-none text-white mx-1" asp-controller="Admin" asp-action="Specialists">
+                        Специалисты
+                    </a>
+                    <a class="col admin-nav-btn-bg-main rounded-2 py-3 px-2 text-decoration-none text-white mx-1" asp-controller="Admin" asp-action="Reviews">
+                        Отзывы
+                    </a>
+                    <a class="col admin-nav-btn-bg-main rounded-2 py-3 px-2 text-decoration-none text-white mx-1" asp-controller="Admin" asp-action="EditPrices">
+                        Цены
+                    </a>
+                    <a class="col admin-nav-btn-bg-main rounded-2 py-3 px-2 text-decoration-none text-white mx-1" asp-controller="Home" asp-action="Index">
+                        На сайт
+                    </a>
+                    @*<div class="col border border-dark">
                         <a asp-controller="Admin" asp-action="Contacts">Контакты</a>
                     </div>
                     <div class="col border border-dark">
                         <a asp-controller="Admin" asp-action="About">О нас</a>
-                    </div>
-                    <div class="col border border-dark">
-                        <a asp-controller="Admin" asp-action="@nameof(AdminController.Logout)">Выход</a>
-                    </div>
+                    </div>*@
+                    <a class="col admin-nav-btn-bg-exit rounded-2 py-3 px-2 text-decoration-none text-white mx-1" asp-controller="Admin" asp-action="@nameof(AdminController.Logout)">
+                        Выход
+                    </a>
                 </div>
             </div>
         </header>

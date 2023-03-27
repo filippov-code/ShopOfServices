@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SiteDbContext>(x => x.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ))
+
 .AddIdentity<IdentityUser, IdentityRole>(config =>
 {
     config.Password.RequireDigit = true;

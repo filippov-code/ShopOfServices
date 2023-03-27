@@ -3,22 +3,28 @@
     Layout = "_AdminLayout";
 }
 
+<section class="px-2 mb-1 w-100 text-center">
+    <div>
+        <h3>Специалисты</h3>
+    </div>
+</section>
 
-<div>
-    <a asp-controller="Admin" asp-action="EditSpecialist">Добавить специалиста</a>
-</div>
-<div>
-    Все услуги
-</div>
-<div class="container-fluid">
-    @foreach (var specialist in Model)
-    {
-        <div class="row">
-            <div class="border border-dark">
-                <a asp-controller="Admin" asp-action="EditSpecialist" asp-route-id="@specialist.Id"><h3>@specialist.GetFIO()</h3></a>
-                <h4>@specialist.Post</h4>
-                <a asp-controller="Admin" asp-action="DeleteSpecialist" asp-route-id="@specialist.Id">Удалить</a>
-            </div>
+<section class="px-2">
+    <div class="container">
+        <div class="mb-1">
+            <button class="btn btn-outline-secondary" asp-controller="Admin" asp-action="EditSpecialist">
+                Добавить специалиста
+            </button>
         </div>
-    }
-</div>
+        @foreach (var specialist in Model)
+        {
+            <div class="border border-2 rounded-1 p-2 mb-1">
+                <a class="text-decoration-none text-black" asp-controller="Admin" asp-action="EditSpecialist" asp-route-id="@specialist.Id">
+                    <h4>@specialist.GetFIO()</h4>
+                    <p>@specialist.Post</p>
+                </a>
+                <button class="btn-light-danger p-2 rounded-2 border-0 text-white" asp-controller="Admin" asp-action="DeleteSpecialist" asp-route-id="@specialist.Id">Удалить</button>
+            </div>
+        }
+    </div>
+</section>

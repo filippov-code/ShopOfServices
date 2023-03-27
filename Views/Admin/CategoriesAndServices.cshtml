@@ -3,22 +3,28 @@
     Layout = "_AdminLayout";
 }
 
-<div>
-    <a asp-controller="Admin" asp-action="EditCategory">Добавить категорию</a>
-</div>
-<div>
-    Все категории
-</div>
-<div class="container-fluid">
-    @foreach (var category in Model)
-    {
-        <div class="row">
-            <div class="border border-dark">
-                <a asp-controller="Admin" asp-action="EditCategory" asp-route-id="@category.Id"><h3>@category.Name</h3></a>
-                <h4>@category.Description</h4>
-                <a asp-controller="Admin" asp-action="DeleteCategory" asp-route-id="@category.Id">Удалить</a>
-            </div>
-        </div>
-    }
-</div>
+<section class="px-2 mb-1 w-100 text-center">
+    <div>
+        <h3>Категории и услуги</h3>
+    </div>
+</section>
 
+<section class="px-2">
+    <div class="container">
+        <div class="mb-1">
+            <button class="btn btn-outline-secondary" asp-controller="Admin" asp-action="EditCategory">
+                Добавить категорию
+            </button>
+        </div>
+        @foreach (var category in Model)
+        {
+            <div class="border border-2 rounded-1 p-2 mb-1">
+                <a class="text-decoration-none text-black" asp-controller="Admin" asp-action="EditCategory" asp-route-id="@category.Id">
+                    <h4>@category.Name</h4>
+                    <p>@category.Description</p>
+                </a>
+                <button class="btn-light-danger p-2 rounded-2 border-0 text-white" asp-controller="Admin" asp-action="DeleteCategory" asp-route-id="@category.Id">Удалить</button>
+            </div>
+        }
+    </div>
+</section>
